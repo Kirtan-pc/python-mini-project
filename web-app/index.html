@@ -20,6 +20,281 @@
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!--
+        ╔══════════════════════════════════════════════════════════════╗
+        ║  PLAYGROUND STYLES                                           ║
+        ║  Scoped entirely to .playground-* selectors.                 ║
+        ║  Add these to css/styles.css if you prefer a single file.    ║
+        ╚══════════════════════════════════════════════════════════════╝
+    -->
+    <style>
+        /* ── Section wrapper ───────────────────────────────────────── */
+        .playground-section {
+            padding: 3rem 0 5rem;
+            animation: fadeIn 0.35s ease;
+        }
+
+        /* ── Header ─────────────────────────────────────────────────── */
+        .playground-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .playground-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .playground-title {
+            font-size: 2.25rem;
+            background: linear-gradient(135deg, #10b981, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+        }
+
+        .playground-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .playground-subtitle a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .playground-subtitle a:hover { color: var(--secondary-color); }
+
+        .playground-hint {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.75;
+        }
+
+        .playground-hint kbd {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 0.2rem 0.45rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            box-shadow: 0 2px 0 var(--border-color);
+        }
+
+        /* ── Status badge ───────────────────────────────────────────── */
+        .playground-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 0.35rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--border-color);
+            flex-shrink: 0;
+            transition: background 0.3s ease;
+        }
+
+        .status-dot.idle    { background: var(--text-secondary); }
+        .status-dot.loading { background: var(--warning-color);
+                              animation: pgPulse 1s ease-in-out infinite; }
+        .status-dot.ready   { background: var(--success-color); }
+        .status-dot.error   { background: var(--danger-color); }
+
+        @keyframes pgPulse {
+            0%, 100% { opacity: 1;    transform: scale(1);    }
+            50%       { opacity: 0.4; transform: scale(0.82); }
+        }
+
+        /* ── Two-column editor / console layout ─────────────────────── */
+        .playground-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .playground-body { grid-template-columns: 1fr; }
+        }
+
+        /* ── Panel shared styles ────────────────────────────────────── */
+        .editor-panel,
+        .console-panel {
+            display: flex;
+            flex-direction: column;
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: border-color 0.25s ease;
+        }
+
+        .editor-panel:focus-within { border-color: var(--primary-color); }
+
+        /* ── Panel header ───────────────────────────────────────────── */
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.25rem;
+            background: rgba(99, 102, 241, 0.08);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .panel-header span { display: flex; align-items: center; gap: 0.5rem; }
+
+        /* ── Panel action buttons ───────────────────────────────────── */
+        .editor-actions { display: flex; gap: 0.5rem; }
+
+        .btn-panel-action {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.3rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn-panel-action:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* ── Code textarea ──────────────────────────────────────────── */
+        #pythonEditor {
+            flex: 1;
+            min-height: 320px;
+            background: transparent;
+            border: none;
+            outline: none;
+            resize: vertical;
+            color: var(--text-color);
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.65;
+            padding: 1.25rem;
+            tab-size: 4;
+        }
+
+        #pythonEditor::placeholder { color: var(--text-secondary); opacity: 0.55; }
+
+        /* ── Console output ─────────────────────────────────────────── */
+        .console-output {
+            flex: 1;
+            min-height: 320px;
+            padding: 1.25rem;
+            margin: 0;
+            font-family: 'Cascadia Code', 'Fira Code', 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.65;
+            overflow-y: auto;
+            background: transparent;
+            color: var(--text-color);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .pg-placeholder {
+            color: var(--text-secondary);
+            opacity: 0.5;
+            font-style: italic;
+        }
+
+        /* ── Run button + controls ──────────────────────────────────── */
+        .playground-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #fff;
+            border: none;
+            padding: 0.85rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 700;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+        }
+
+        .btn-run:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-run:active:not(:disabled) { transform: translateY(0); }
+
+        .btn-run:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .run-hint {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .run-hint kbd {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 0.15rem 0.4rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        /* ── Reduced-motion overrides for playground ────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            .playground-section { animation: none; }
+            .status-dot.loading { animation: none; }
+            .btn-run:hover:not(:disabled) { transform: none; }
+        }
+    </style>
 </head>
 
 <body>
@@ -43,99 +318,110 @@
     </nav>
 
     <main id="main-content" tabindex="-1">
-    <!-- Search & Category Tabs -->
-    <section class="tabs-section" aria-label="Search and Project categories">
-        <div class="container">
-            <div class="tabs-wrapper">
-                <div class="tabs">
-                    <button class="tab active" data-category="all">🌟 All Projects</button>
-                    <button class="tab" data-category="games">🎮 Games</button>
-                    <button class="tab" data-category="math">🔢 Math</button>
-                    <button class="tab" data-category="utilities">🔐 Utilities</button>
-                </div>
-                <button class="btn-random-project" id="randomProjectBtn" title="Discover a random project!">
-                    <i class="fas fa-dice"></i> Random Project 🎲
-                </button>
-            </div>
-        </div>
-    </section>
 
-        <!-- Projects Grid -->
+        <!-- Search & Category Tabs -->
+        <section class="tabs-section" aria-label="Search and Project categories">
+            <div class="container">
+                <div class="tabs-wrapper">
+                    <div class="tabs" role="tablist" aria-label="Project categories">
+                        <button class="tab active" data-category="all"
+                                role="tab" aria-selected="true"  tabindex="0">🌟 All Projects</button>
+                        <button class="tab" data-category="games"
+                                role="tab" aria-selected="false" tabindex="-1">🎮 Games</button>
+                        <button class="tab" data-category="math"
+                                role="tab" aria-selected="false" tabindex="-1">🔢 Math</button>
+                        <button class="tab" data-category="utilities"
+                                role="tab" aria-selected="false" tabindex="-1">🔐 Utilities</button>
+                        <!--
+                            PLAYGROUND TAB
+                            data-category="playground" is detected by main.js
+                            and delegates to window.playgroundAPI instead of
+                            running applyCategoryFilter().
+                        -->
+                        <button class="tab" data-category="playground" id="playgroundTab"
+                                role="tab" aria-selected="false" tabindex="-1">🐍 Playground</button>
+                    </div>
+                    <button class="btn-random-project" id="randomProjectBtn"
+                            title="Discover a random project!">
+                        <i class="fas fa-dice"></i> Random Project 🎲
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Projects Grid ──────────────────────────────────────── -->
         <section class="projects-section" aria-label="Projects">
             <div class="container">
                 <div class="projects-grid" id="projectsGrid">
-                    <div class="project-card" data-category="games" data-project="rock-paper-scissor" data-tags="game,random,choice,strategy,decision">
+
+                    <!-- GAMES -->
+                    <div class="project-card" data-category="games" data-project="rock-paper-scissor"
+                         data-tags="game,random,choice,strategy,decision">
                         <div class="card-icon">🪨</div>
                         <h3>Rock Paper Scissors</h3>
                         <p>Battle against the computer!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="dice-rolling" data-tags="game,random,animation,probability">
+                    <div class="project-card" data-category="games" data-project="dice-rolling"
+                         data-tags="game,random,animation,probability">
                         <div class="card-icon">🎲</div>
                         <h3>Dice Rolling</h3>
                         <p>Roll the dice with 3D animation!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="coin-flip" data-tags="game,random,animation,probability,heads,tails">
+                    <div class="project-card" data-category="games" data-project="coin-flip"
+                         data-tags="game,random,animation,probability,heads,tails">
                         <div class="card-icon">🪙</div>
                         <h3>Coin Flip</h3>
                         <p>Heads or tails with spinning animation!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="number-guessing" data-tags="game,logic,loops,conditional">
+                    <div class="project-card" data-category="games" data-project="number-guessing"
+                         data-tags="game,logic,loops,conditional">
                         <div class="card-icon">🎯</div>
                         <h3>Number Guessing</h3>
                         <p>Guess the secret number!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="hangman" data-tags="game,word,letters,logic,string">
+                    <div class="project-card" data-category="games" data-project="hangman"
+                         data-tags="game,word,letters,logic,string">
                         <div class="card-icon">🎮</div>
                         <h3>Hangman</h3>
                         <p>Classic word-guessing game!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                <div class="project-card" data-category="games" data-project="word-scramble">
-                    <div class="card-icon">&#128292;</div>
-                    <h3>Word Scramble</h3>
-                    <p>Unscramble words before attempts run out!</p>
-                    <button class="btn-play">Play Now</button>
-                </div>
+                    <div class="project-card" data-category="games" data-project="word-scramble">
+                        <div class="card-icon">&#128292;</div>
+                        <h3>Word Scramble</h3>
+                        <p>Unscramble words before attempts run out!</p>
+                        <button class="btn-play">Play Now</button>
+                    </div>
 
-                <div class="project-card" data-category="games" data-project="flames">
-                    <div class="card-icon">💖</div>
-                    <h3>FLAMES Game</h3>
-                    <p>Discover your relationship status!</p>
-                    <button class="btn-play">Play Now</button>
-                </div>
+                    <div class="project-card" data-category="games" data-project="flames">
+                        <div class="card-icon">💖</div>
+                        <h3>FLAMES Game</h3>
+                        <p>Discover your relationship status!</p>
+                        <button class="btn-play">Play Now</button>
+                    </div>
 
-<<<<<<< HEAD
-                <div class="project-card" data-category="games" data-project="dots-boxes">
-                    <div class="card-icon">🔲</div>
-                    <h3>Dots & Boxes AI</h3>
-                    <p>Challenge friends or AI in this strategy game!</p>
-                    <button class="btn-play">Play Now</button>
-                </div>
-                
-                <!-- Math Tools -->
-                <div class="project-card" data-category="math" data-project="fibonacci">
-                    <div class="card-icon">✨</div>
-                    <h3>Fibonacci Series</h3>
-                    <p>Generate Fibonacci sequences!</p>
-                    <button class="btn-play">Try It</button>
-                </div>
-=======
+                    <div class="project-card" data-category="games" data-project="dots-boxes">
+                        <div class="card-icon">🔲</div>
+                        <h3>Dots &amp; Boxes AI</h3>
+                        <p>Challenge friends or AI in this strategy game!</p>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+
                     <div class="project-card" data-category="games" data-project="password-forge">
                         <div class="card-icon">🔐</div>
                         <h3>Password Forge</h3>
                         <p>Survive evolving firewall password rules!</p>
                         <button class="btn-play">Try It</button>
                     </div>
->>>>>>> upstream/main
 
                     <div class="project-card" data-category="games" data-project="snake-game">
                         <div class="card-icon">🐍</div>
@@ -158,84 +444,106 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="fibonacci" data-tags="math,sequence,series,loops,recursion">
+                    <div class="project-card" data-category="games" data-project="game2048"
+                         data-tags="game,puzzle,2048,logic,tiles">
+                        <div class="card-icon">🟦</div>
+                        <h3>2048 Game</h3>
+                        <p>Combine tiles and reach 2048!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <!-- MATH -->
+                    <div class="project-card" data-category="math" data-project="fibonacci"
+                         data-tags="math,sequence,series,loops,recursion">
                         <div class="card-icon">✨</div>
                         <h3>Fibonacci Series</h3>
                         <p>Generate Fibonacci sequences!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="progression-recognizer" data-tags="math,sequence,progression,arithmetic,geometric">
+                    <div class="project-card" data-category="math" data-project="progression-recognizer"
+                         data-tags="math,sequence,progression,arithmetic,geometric">
                         <div class="card-icon">📐</div>
                         <h3>AP/GP/AGP/HP Recognizer</h3>
                         <p>Identify progression types from any sequence.</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="pascal-triangle" data-tags="math,triangle,visualization,recursion">
+                    <div class="project-card" data-category="math" data-project="pascal-triangle"
+                         data-tags="math,triangle,visualization,recursion">
                         <div class="card-icon">🔺</div>
                         <h3>Pascal's Triangle</h3>
                         <p>Beautiful hexagon visualization!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="armstrong" data-tags="math,number,digits,power">
+                    <div class="project-card" data-category="math" data-project="armstrong"
+                         data-tags="math,number,digits,power">
                         <div class="card-icon">💎</div>
                         <h3>Armstrong Numbers</h3>
                         <p>Check special number properties!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="calculator" data-tags="math,calculator,arithmetic,operations">
+                    <div class="project-card" data-category="math" data-project="calculator"
+                         data-tags="math,calculator,arithmetic,operations">
                         <div class="card-icon">🧮</div>
                         <h3>Calculator</h3>
                         <p>Your mathematical companion!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="collatz" data-tags="math,conjecture,algorithm,sequence">
+                    <div class="project-card" data-category="math" data-project="collatz"
+                         data-tags="math,conjecture,algorithm,sequence">
                         <div class="card-icon">🔢</div>
                         <h3>Collatz Conjecture</h3>
                         <p>Explore the 3n+1 problem!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="prime-analyzer" data-tags="math,prime,factors,algorithm">
+                    <div class="project-card" data-category="math" data-project="prime-analyzer"
+                         data-tags="math,prime,factors,algorithm">
                         <div class="card-icon">🔱</div>
                         <h3>Prime Analyzer</h3>
                         <p>All-in-one prime number toolkit!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="projectile-motion" data-tags="math,physics,motion,calculation">
+                    <div class="project-card" data-category="math" data-project="projectile-motion"
+                         data-tags="math,physics,motion,calculation">
                         <div class="card-icon">🚀</div>
                         <h3>Projectile Motion</h3>
                         <p>Calculate TOF, Hmax, and Range with physics!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="coordinate-polar-transform" data-tags="math,coordinate,transformation,geometry">
+                    <div class="project-card" data-category="math" data-project="coordinate-polar-transform"
+                         data-tags="math,coordinate,transformation,geometry">
                         <div class="card-icon">🧭</div>
                         <h3>Coordinate to Polar</h3>
                         <p>Transform Cartesian (x, y) into polar (r, theta).</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="math" data-project="derivative-calculator" data-tags="math,calculus,derivative,polynomial">
+                    <div class="project-card" data-category="math" data-project="derivative-calculator"
+                         data-tags="math,calculus,derivative,polynomial">
                         <div class="card-icon">∂</div>
                         <h3>Derivative Calculator</h3>
                         <p>Compute 1st/nth polynomial derivatives and evaluate them.</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="utilities" data-project="morse-code" data-tags="utility,morse,translation,communication">
+                    <!-- UTILITIES -->
+                    <div class="project-card" data-category="utilities" data-project="morse-code"
+                         data-tags="utility,morse,translation,communication">
                         <div class="card-icon">📻</div>
                         <h3>Morse Code</h3>
-                        <p>Translate with lights & sound!</p>
+                        <p>Translate with lights &amp; sound!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="utilities" data-project="tower-of-hanoi" data-tags="utility,puzzle,recursion,algorithm">
+                    <div class="project-card" data-category="utilities" data-project="tower-of-hanoi"
+                         data-tags="utility,puzzle,recursion,algorithm">
                         <div class="card-icon">🗼</div>
                         <h3>Tower of Hanoi</h3>
                         <p>Solve the classic puzzle!</p>
@@ -256,51 +564,151 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="game2048"
-    data-tags="game,puzzle,2048,logic,tiles">
-    
-    <div class="card-icon">🟦</div>
-
-    <h3>2048 Game</h3>
-
-    <p>Combine tiles and reach 2048!</p>
-
-    <button class="btn-play">Try It</button>
-</div>
-                </div>
+                </div><!-- /projects-grid -->
             </div>
         </section>
-    </main>
 
-    <!-- Project Modal -->
-    <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalDialogTitle"
-        aria-hidden="true">
+        <!-- ── Python Playground Section ──────────────────────────── -->
+        <!--
+            Hidden by default (display:none set in playground.js).
+            Shown only when the 🐍 Playground tab is clicked.
+            Completely separate from the modal system – no conflicts.
+        -->
+        <section class="playground-section" id="playgroundSection"
+                 aria-label="Python Playground">
+            <div class="container">
+
+                <!-- Header -->
+                <div class="playground-header">
+                    <div class="playground-title-row">
+                        <h2 class="playground-title">🐍 Python Playground</h2>
+                        <div class="playground-status" id="playgroundStatus"
+                             aria-live="polite" aria-label="Pyodide status">
+                            <span class="status-dot" id="statusDot"></span>
+                            <span id="statusText">Open tab to load Python</span>
+                        </div>
+                    </div>
+                    <p class="playground-subtitle">
+                        Write and run real Python code in your browser — powered by
+                        <a href="https://pyodide.org" target="_blank" rel="noopener noreferrer">Pyodide</a>.
+                        No install, no backend.
+                    </p>
+                    <p class="playground-hint">
+                        <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs code &nbsp;·&nbsp;
+                        <kbd>Tab</kbd> inserts 4 spaces
+                    </p>
+                </div>
+
+                <!-- Editor + Console side-by-side -->
+                <div class="playground-body">
+
+                    <!-- Code Editor panel -->
+                    <div class="editor-panel">
+                        <div class="panel-header">
+                            <span>
+                                <i class="fas fa-code" aria-hidden="true"></i>
+                                Code Editor
+                            </span>
+                            <div class="editor-actions">
+                                <button type="button" class="btn-panel-action" id="loadExample"
+                                        title="Load a sample snippet">
+                                    <i class="fas fa-lightbulb" aria-hidden="true"></i> Example
+                                </button>
+                                <button type="button" class="btn-panel-action" id="clearEditor"
+                                        title="Clear the editor">
+                                    <i class="fas fa-trash-alt" aria-hidden="true"></i> Clear
+                                </button>
+                            </div>
+                        </div>
+                        <textarea
+                            id="pythonEditor"
+                            spellcheck="false"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            aria-label="Python code editor"
+                            placeholder="# Write your Python code here…&#10;print('Hello, World!')"></textarea>
+                    </div>
+
+                    <!-- Console output panel -->
+                    <div class="console-panel">
+                        <div class="panel-header">
+                            <span>
+                                <i class="fas fa-terminal" aria-hidden="true"></i>
+                                Output Console
+                            </span>
+                            <button type="button" class="btn-panel-action" id="clearConsole"
+                                    title="Clear the console">
+                                <i class="fas fa-times-circle" aria-hidden="true"></i> Clear
+                            </button>
+                        </div>
+                        <pre id="consoleOutput"
+                             class="console-output"
+                             aria-live="polite"
+                             aria-label="Console output"></pre>
+                    </div>
+
+                </div><!-- /playground-body -->
+
+                <!-- Run button row -->
+                <div class="playground-controls">
+                    <button type="button" class="btn-run" id="runCode"
+                            disabled aria-label="Run Python code">
+                        <i class="fas fa-play" aria-hidden="true"></i>
+                        Run Code
+                    </button>
+                    <span class="run-hint">
+                        or press <kbd>Ctrl</kbd>+<kbd>Enter</kbd>
+                    </span>
+                </div>
+
+            </div>
+        </section>
+
+    </main><!-- /main -->
+
+    <!-- Project Modal (unchanged) -->
+    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
+         aria-labelledby="modalDialogTitle" aria-hidden="true">
         <div class="modal-content">
-            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
-            <button type="button" class="modal-close" id="modalClose" aria-label="Close project dialog">&times;</button>
+            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden"
+                tabindex="-1">Interactive project</h2>
+            <button type="button" class="modal-close" id="modalClose"
+                    aria-label="Close project dialog">&times;</button>
             <div id="modalBody"></div>
         </div>
     </div>
 
-    <!-- Back to Top Button -->
-    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+    <!-- Back to Top Button (unchanged) -->
+    <button type="button" class="back-to-top" id="backToTop"
+            aria-label="Back to top" title="Back to top">
         <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
-    <!-- Footer -->
+    <!-- Footer (unchanged) -->
     <footer class="footer">
         <div class="container">
             <p>Made with ❤️ for Python learners everywhere</p>
             <p>
-                <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank"
-                    rel="noopener noreferrer">
+                <a href="https://github.com/steam-bell-92/python-mini-project"
+                   target="_blank" rel="noopener noreferrer">
                     <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
                 </a>
             </p>
         </div>
     </footer>
 
-    <!-- Project modules (one file per project) -->
+    <!-- ─────────────────────────────────────────────────────────────
+         SCRIPTS  –  load order matters:
+           1. audio.js          (no deps)
+           2. project modules   (no deps)
+           3. projects.js       (registry, depends on project modules)
+           4. playground.js     (NEW – sets window.PYODIDE + window.playgroundAPI)
+           5. main.js           (depends on projects.js + window.playgroundAPI)
+
+         Pyodide itself is loaded lazily inside playground.js when the
+         user clicks the 🐍 Playground tab. It is NEVER loaded eagerly
+         and therefore NEVER blocks the modal system or any other UI.
+    ──────────────────────────────────────────────────────────────── -->
     <script src="js/audio.js"></script>
     <script src="js/projects/rock-paper-scissor.js"></script>
     <script src="js/projects/dice-rolling.js"></script>
@@ -324,8 +732,24 @@
     <!-- Registry: maps project names to their module functions -->
     <script src="js/projects.js"></script>
 
+    <!--
+        playground.js MUST come before main.js so that
+        window.playgroundAPI is defined when main.js runs.
+        No Pyodide CDN tag here — Pyodide is injected lazily.
+    -->
+    <script src="js/playground.js"></script>
+
     <!-- Main app logic -->
     <script src="js/main.js"></script>
-</body>
 
+</body>
 </html>
+
+
+
+
+
+
+
+
+
