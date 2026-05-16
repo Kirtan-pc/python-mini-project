@@ -114,7 +114,8 @@ while True:
         )
 
     if head.distance(food) < 15:
-        while True:
+        attempts = 0
+        while attempts < 100:
             x = random.randint(-14, 14) * 20
             y = random.randint(-14, 14) * 20
             overlaps = False
@@ -125,9 +126,13 @@ while True:
                     overlaps = True
                     break
             if not overlaps:
+                food.goto(x, y)
                 break
+            attempts += 1
 
-        food.goto(x, y)
+        if attempts >= 100:
+            # Fallback if random fails (highly unlikely but safe)
+            food.goto(2000, 2000) # Hide food if no space found
 
         new_part = turtle.Turtle()
         new_part.shape("square")
