@@ -1,152 +1,93 @@
-# 🌐 Python Mini Projects - Web Edition
+# Web App Folder
 
-An interactive web application showcasing Python mini projects with beautiful visualizations and animations.
+This folder contains the interactive web-based version of the Python Mini Projects collection. You can play games, use math tools, and try utilities directly in your browser—no installation or build process required.
 
-## ✨ Features
+## What is Inside?
 
-- 🎮 **Fully Interactive** - All projects work directly in your browser
-- 🎨 **Beautiful UI** - Modern design with smooth animations
-- 🌓 **Dark/Light Mode** - Toggle between themes
-- 📱 **Responsive** - Works on desktop, tablet, and mobile
-- 🚀 **Zero Setup** - Just open index.html and play!
+- index.html — Main entry point for the web app UI
+- css/styles.css — Custom styles for dark/light themes and responsive design
+- assets/ — Icons and images (e.g., favicon)
+- js/main.js — App logic, navigation, and UI controls
+- js/projects.js — Project registry and loader
+- js/projects/ — Each project’s HTML/JS logic in its own file (e.g. tic-tac-toe.js, calculator.js)
 
-## 🎯 Included Projects
+## How to Run the Web App
 
-### 🎮 Games
-- **Rock Paper Scissors** - Animated hand gestures with score tracking
-- **Dice Rolling** - 3D rolling animation with realistic dice faces
-- **Coin Flip** - Spinning coin with heads/tails statistics
-- **Number Guessing** - Interactive guessing with smart hints
-- **Hangman** - Classic word game 
-- **FLAMES** - Relationship calculator 
-- **Simon Says** - Memory Game
+These instructions are for beginners and assume no prior web development experience.
 
-### 🔢 Math Tools
-- **Fibonacci Series** - Visual sequence with golden spiral
-- **AP/GP/AGP/HP Recognizer** - Detect progression types from a sequence
-- **Coordinate to Polar Transformation** - Convert Cartesian (x, y) to polar (r, theta)
-- **Derivative Calculator** - Compute polynomial derivatives and evaluate at x
-- **Pascal's Triangle** - Beautiful hexagon grid visualization
-- **Projectile Motion** - Calculate TOF, Hmax, and Range
-- **Armstrong Numbers** - Check special number properties (Coming Soon)
-- **Calculator** - Full-featured calculator with power operations
-- **Collatz Conjecture** - Explore the 3n+1 problem (Coming Soon)
-- **Prime Analyzer** - Comprehensive prime number toolkit (Coming Soon)
+1. Download or clone the repository to your computer.
+	- If you are new to GitHub, click the green "Code" button on the repository page and select "Download ZIP". Extract the ZIP file to a folder on your computer.
+	- If you use Git, run:
+	  ```bash
+	  git clone https://github.com/steam-bell-92/python-mini-project.git
+	  ```
 
-### 🔐 Utilities
-- **Morse Code** - Text to Morse with lights & sound (Coming Soon)
-- **Tower of Hanoi** - Visual puzzle solver (Coming Soon)
+2. Open the project folder on your computer.
 
-## 🚀 Quick Start
+3. Find the `web-app` folder inside the project.
 
-### Option 1: Local
-```bash
-# Navigate to web-app folder
-cd web-app
+4. Open the file named `index.html`.
+	- On Windows: Right-click `index.html` and choose "Open with" > your web browser (e.g., Chrome, Edge, Firefox).
+	- On Mac: Right-click or Control-click `index.html` and choose "Open With" > your browser.
+	- On Linux: Double-click or right-click and select your browser.
 
-# Open in browser (double-click or use a local server)
-# Recommended: Use Live Server extension in VS Code
-```
+5. The web app will open in your browser. You can now use all the games, math tools, and utilities instantly.
 
-### Option 2: GitHub Pages
-Deploy to GitHub Pages for free hosting:
-1. Push to GitHub
-2. Go to Settings → Pages
-3. Select main branch and /web-app folder
-4. Your site will be live at `https://steam-bell-92.github.io/python-mini-project/` (replace `steam-bell-92` with your GitHub username if you fork)
+**No build tools, package managers, or server setup are required. Everything runs locally in your browser.**
 
-### Option 3: Python HTTP Server
-```bash
-cd web-app
-python -m http.server 8000
+## Adding a New Web Project
 
-# Visit http://localhost:8000
-```
+If you want to add your own project to the web app, follow these steps:
 
-## 📁 Project Structure
+1. Create a new JavaScript file in `js/projects/` (for example, `my-game.js`).
+2. Write a function that returns your project’s HTML as a string. See other files in `js/projects/` for examples.
+3. Register your project in `js/projects.js` by adding it to the `getProjectHTML` function and any initialization logic.
+4. (Optional) Add a project card in `index.html` so users can find your project easily.
+5. Use only plain JavaScript and CSS (no frameworks like React or Vue).
+6. Test your project on both desktop and mobile browsers to ensure it works and looks good.
 
-```
-web-app/
-├── index.html              # Main HTML file
-├── css/
-│   └── styles.css          # All styles and animations
-├── js/
-│   ├── main.js             # Core functionality (theme, navigation, modal)
-│   ├── projects.js         # First set of project implementations
-│   └── projects-extended.js # Additional project implementations
-└── assets/                 # Images and other assets (if needed)
-```
+## Project List (as of May 2026)
 
-## 🎨 Customization
+- 2048 Game
+- Armstrong Number
+- Calculator
+- Coin Flip
+- Collatz Conjecture
+- Coordinate to Polar Transform
+- Derivative Calculator
+- Dice Rolling
+- Emoji Memory Game
+- F1 Performance Analyzer
+- Fibonacci Series
+- FLAMES Game
+- Hangman
+- Morse Code
+- Number Converter
+- Number Guessing
+- Pascal Triangle
+- Prime Analyzer
+- Productivity Pet
+- Progression Recognizer
+- Projectile Motion
+- Rock Paper Scissor
+- Simon Says
+- Snake Game
+- Spot the Difference
+- Tic Tac Toe
+- Tower of Hanoi
+- Typing Speed Tester
+- Whack a Mole
+- Word Scramble
 
-### Change Colors
-Edit CSS variables in `css/styles.css`:
-```css
-:root {
-    --primary-color: #6366f1;  /* Main theme color */
-    --secondary-color: #8b5cf6; /* Accent color */
-    /* ... more variables */
-}
-```
+## Contribution Guidelines
 
-### Add New Projects
-1. Add HTML template function in `js/projects-extended.js`
-2. Add initialization function
-3. Add card in `index.html` projects grid
-4. Link functions in `getProjectHTML()` and `initializeProject()`
-
-## 🔧 Technologies Used
-
-- **HTML5** - Structure and canvas elements
-- **CSS3** - Animations, gradients, and modern layouts
-- **JavaScript (ES6+)** - All logic and interactivity
-- **Font Awesome** - Icons
-- **No frameworks** - Pure vanilla JavaScript!
-
-## 🌟 Key Features
-
-### Visual Highlights
-- **Pascal's Triangle** - Hexagon grid with numbers
-- **Fibonacci** - Golden spiral visualization
-- **Dice Rolling** - 3D rolling animation
-- **Coin Flip** - Realistic flipping physics
-- **Calculator** - Modern button interface
-
-### UX Features
-- Smooth transitions and animations
-- Category filtering (All, Games, Math, Utilities)
-- Modal system for focused project interaction
-- Responsive design for all screen sizes
-- Theme persistence with localStorage
-
-## 📱 Browser Compatibility
-
-- ✅ Chrome (recommended)
-- ✅ Firefox
-- ✅ Safari
-- ✅ Edge
-- ✅ Opera
-
-## 🤝 Contributing
-
-Want to add more visualizations or complete the "Coming Soon" projects?
-
-1. Fork the repository
-2. Create your feature branch
-3. Implement the project in `js/projects-extended.js`
-4. Test thoroughly
-5. Submit a pull request
-
-## 📝 License
-
-Same as parent project - MIT License
-
-## 🎉 Credits
-
-Web adaptation of the [Python Mini Projects](https://github.com/steam-bell-92/python-mini-project) collection.
-
-Made with ❤️ for learners everywhere!
+- Follow the main project README for contribution steps and best practices.
+- Use semantic HTML and accessible labels for all interactive elements.
+- Keep the UI simple, clear, and educational for all users.
+- Use only plain JavaScript and CSS. Do not add frameworks or external libraries unless approved.
+- Test your changes in multiple browsers and on mobile devices.
+- Credit: Project by [steam-bell-92](https://github.com/steam-bell-92) and contributors
 
 ---
 
-**Enjoy exploring Python concepts through interactive web visualizations!** 🚀
+Thank you for contributing to Python Mini Projects Web Edition!
