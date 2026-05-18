@@ -7,6 +7,7 @@ function getTypingSpeedTesterHTML() {
             <p style="margin-bottom: 10px;">
                 Type the exact sentence shown below 👇
             </p>
+            
 
             <div 
                 id="typingSentence"
@@ -22,29 +23,43 @@ function getTypingSpeedTesterHTML() {
                 Click Start Test 🚀
             </div>
 
-            <textarea
-                id="typingInput"
-                placeholder="Start typing here..."
-                rows="5"
-                disabled
-                style="
-                    width: 100%;
-                    padding: 15px;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    margin-bottom: 20px;
-                    background: var(--surface-color);
-                    color: var(--text-color);
-                    border: 1px solid var(--border-color);
-                "
-            ></textarea>
-
             <button
                 id="startTypingBtn"
                 class="btn-play"
+                style="
+                    margin-bottom: 20px;
+                    font-weight: 700;
+                    font-size: 16px;
+                    width:auto;   
+                    min-height: 44px;
+                    padding: 12px 24px;               
+                    border-radius: 30px;
+                    background-color:var(--accent-color);
+                    color:white;
+                "
             >
                 Start Test 🚀
             </button>
+
+            <div>
+            <textarea
+            id="typingInput"
+            placeholder="Start typing here..."
+            rows="5"
+            disabled
+            style="
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            "
+            ></textarea>
+            </div>
+        
 
             <div
                 id="typingResult"
