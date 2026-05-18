@@ -2,39 +2,39 @@
 
 <div align="center">
 
-# ğŸ® Python Mini Projects Collection ğŸ¯
+# =ƒÄ« Python Mini Projects Collection =ƒÄ»
 
 ### *Learn Python by Building Fun, Interactive Games & Tools!*
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**ğŸš€ Perfect for beginners | ğŸ’¡ Learn by doing | ğŸ¨ Beautiful UI | âš¡ Zero setup required**
+**=ƒÜÇ Perfect for beginners | =ƒÆí Learn by doing | =ƒÄ¿ Beautiful UI | GÜí Zero setup required**
 
-[Quick Start](#-quick-start) â€¢ [Contributing](CONTRIBUTING.md) â€¢ [Contributors](#-contributors) â€¢ [Features](#-features)
+[Quick Start](#-quick-start) GÇó [Contributing](CONTRIBUTING.md) GÇó [Contributors](#-contributors) GÇó [Features](#-features)
 
 ---
 
 </div>
 
-## ğŸ¯ Why This Repository?
+## =ƒÄ» Why This Repository?
 
 > **Tired of boring "Hello World" tutorials?** 
 
 We built this collection to make learning Python **fun, interactive, and instantly rewarding**! Each project is:
-- âœ… **Complete & Ready to Run** - No setup, no dependencies, just pure Python fun
-- ğŸ¨ **Visually Stunning** - Beautiful emoji-based UI that makes coding exciting
-- ğŸ“š **Educational** - Learn core concepts while building real projects
-- ğŸ® **Engaging** - From games to tools, there's something for everyone
-- ğŸ’ª **Beginner-Friendly** - Clean code with no complex functions
+- G£à **Complete & Ready to Run** - No setup, no dependencies, just pure Python fun
+- =ƒÄ¿ **Visually Stunning** - Beautiful emoji-based UI that makes coding exciting
+- =ƒôÜ **Educational** - Learn core concepts while building real projects
+- =ƒÄ« **Engaging** - From games to tools, there's something for everyone
+- =ƒÆ¬ **Beginner-Friendly** - Clean code with no complex functions
 
 **Perfect for:** Students learning Python, teachers looking for class projects, or anyone wanting to code something fun in minutes!
 
 ---
 
-## âš¡ Quick Start
+## GÜí Quick Start
 
-### ğŸŒ **Try the Web App** (Recommended!)
+### =ƒîÉ **Try the Web App** (Recommended!)
 Experience all 24 projects in your browser with beautiful animations and visualizations!
 
 ```bash
@@ -50,7 +50,7 @@ python -m http.server 8000
 # Open http://localhost:8000 in your browser
 ```
 
-### ğŸ **Or Run Python Projects Directly**
+### =ƒÉì **Or Run Python Projects Directly**
 
 ```bash
 # Navigate to the project
@@ -60,13 +60,13 @@ cd python-mini-project
 python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 ```
 
-**That's it!** No pip installs, no virtual environments, just instant fun! ğŸ‰
+**That's it!** No pip installs, no virtual environments, just instant fun! =ƒÄë
 
 ---
 
-## âœ¨ Features
+## G£¿ Features
 
-### ğŸŒ Interactive Web Application
+### =ƒîÉ Interactive Web Application
 - **All Projects in Your Browser** - No Python installation required!
 - **Beautiful Animations** - Smooth transitions and visual effects
 - **Dark/Light Theme** - Toggle between themes for comfort
@@ -74,7 +74,7 @@ python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 - **Responsive Design** - Works on desktop, tablet, and mobile
 - **Zero Setup** - Just open and play!
 
-### ğŸ Python CLI Projects
+### =ƒÉì Python CLI Projects
 | Feature | Description |
 |---------|-------------|
 | **Beautiful UI** | Every project uses emojis for an engaging visual experience |
@@ -86,9 +86,9 @@ python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 
 ---
 
-## ğŸš€ Getting Started Guide
+## =ƒÜÇ Getting Started Guide
 
-### ğŸŒ Web Application (Easiest Way!)
+### =ƒîÉ Web Application (Easiest Way!)
 
 1. **Clone the repository**
    ```bash
@@ -107,9 +107,9 @@ python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 
 3. **Open your browser** and visit `http://localhost:8000`
 
-4. **Enjoy all projects** with beautiful animations! ğŸ‰
+4. **Enjoy all projects** with beautiful animations! =ƒÄë
 
-### ğŸ Python CLI Projects
+### =ƒÉì Python CLI Projects
 
 #### Prerequisites
 - Python 3.10 or higher ([Download here](https://www.python.org/downloads/))
@@ -124,33 +124,33 @@ python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
    ```bash
    python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
    ```
-5. **Have fun!** ğŸ‰
+5. **Have fun!** =ƒÄë
 
 ### Tips for Beginners
-- ğŸ’¡ **Try the web app first** for an instant, visual experience
-- ğŸ® Start with simple games like Coin Flip or Dice Rolling
-- ğŸ“– Read through the code to understand how it works
-- ğŸ¨ Try modifying emojis or messages to personalize the projects
-- ğŸ”§ Experiment with changing game rules or adding features
-- ğŸ¤ Share your improvements with the community!
+- =ƒÆí **Try the web app first** for an instant, visual experience
+- =ƒÄ« Start with simple games like Coin Flip or Dice Rolling
+- =ƒôû Read through the code to understand how it works
+- =ƒÄ¿ Try modifying emojis or messages to personalize the projects
+- =ƒöº Experiment with changing game rules or adding features
+- =ƒñ¥ Share your improvements with the community!
 
 ---
 
-## ğŸ¤ Contributing
+## =ƒñ¥ Contributing
 
 We love contributions! Here's how you can help:
 
 ### Adding New Projects
 
-1. ğŸ´ **Fork** the repository
-2. ğŸŒŸ **Create** a new branch (`git checkout -b feature/AmazingProject`)
-3. ğŸ’» **Add** your mini project
+1. =ƒì¦ **Fork** the repository
+2. =ƒîƒ **Create** a new branch (`git checkout -b feature/AmazingProject`)
+3. =ƒÆ+ **Add** your mini project
    - Python CLI version in a category folder (`games/`, `math/`, or `utilities/`) and then its own project folder (for example `games/Project-Name/Project-Name.py`)
    - Web implementation in `web-app/js/projects.js`
-4. âœ… **Ensure** it follows our style (emojis, clean code)
-5. ğŸ“¤ **Commit** your changes (`git commit -m 'Add Amazing Project'`)
-6. ğŸš€ **Push** to the branch (`git push origin feature/AmazingProject`)
-7. ğŸ‰ **Open** a Pull Request
+4. G£à **Ensure** it follows our style (emojis, clean code)
+5. =ƒôñ **Commit** your changes (`git commit -m 'Add Amazing Project'`)
+6. =ƒÜÇ **Push** to the branch (`git push origin feature/AmazingProject`)
+7. =ƒÄë **Open** a Pull Request
 
 ### Project Guidelines
 
@@ -164,37 +164,37 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 <!-- CONTRIBUTORS_END -->
 
 ---
-## ğŸ“ License
+## =ƒô¥ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## ğŸ’¬ Connect & Share
+## =ƒÆ¼ Connect & Share
 
 Found this helpful? Show some love!
 
-- â­ **Star this repo** if you found it useful
-- ğŸ› **Report bugs** or suggest features via [Issues](../../issues)
-- ğŸ’¬ **Share** with friends learning Python
-- ğŸ“ **Use** in your classroom or coding club
+- G¡É **Star this repo** if you found it useful
+- =ƒÉ¢ **Report bugs** or suggest features via [Issues](../../issues)
+- =ƒÆ¼ **Share** with friends learning Python
+- =ƒÄô **Use** in your classroom or coding club
 
 ---
 
 <div align="center">
 
-### ğŸ‰ Happy Coding! ğŸ‰
+### =ƒÄë Happy Coding! =ƒÄë
 
-**Made with â¤ï¸ for Python learners everywhere**
+**Made with G¥ñn+Å for Python learners everywhere**
 
-*If you learned something new, don't forget to star the repo! â­*
+*If you learned something new, don't forget to star the repo! G¡É*
 
-[â¬† Back to Top](#-python-mini-projects-collection-)
+[G¼å Back to Top](#-python-mini-projects-collection-)
 
 </div>
 
 
-## ğŸ™Œ Contributors
+## =ƒÖî Contributors
 
 - sujitsingh8
 

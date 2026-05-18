@@ -1,79 +1,113 @@
 name: contributor automation
 
 on:
-  schedule: # runs daily at midnight
-    - cron: '0 0 * * *'     
-  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request_target:
     types: [closed]
     branches:
       - main
-     
-      # allows manual trigger
+
 permissions:
   contents: write
 
 jobs:
   update-readme:
-    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
+    if: github.event_name == 'schedule' || (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Fetch Merged PR Authors (Pagination)
+      - name: Fetch Contributors
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          
+          # Use a temporary file for the contributors list
+          echo "[]" > contributors.json
           PAGE=1
-          echo "[]" > final_list.json
+          
+          echo "Fetching contributors from GitHub API..."
           while true; do
-            # Using pulls endpoint to capture only merged contributors
-            RESPONSE=$(gh api "/repos/steam-bell-92/python-mini-project/pulls?state=closed&per_page=100&page=${PAGE}")
+            # Using the contributors endpoint which is more efficient than parsing all PRs
+            # Adding a timeout and retry logic via curl-like behavior of gh api
+            RESPONSE=$(gh api --timeout 30s "/repos/${{ github.repository }}/contributors?per_page=100&page=${PAGE}" || echo "FAILED")
+            
+            if [ "$RESPONSE" = "FAILED" ]; then
+              echo "API call failed or timed out. Retrying in 5 seconds..."
+              sleep 5
+              RESPONSE=$(gh api --timeout 60s "/repos/${{ github.repository }}/contributors?per_page=100&page=${PAGE}" || exit 1)
+            fi
+            
             COUNT=$(echo "$RESPONSE" | jq '. | length')
             if [ "$COUNT" -eq 0 ]; then break; fi
-            jq -s '.[0] + .[1]' final_list.json <(echo "$RESPONSE") > tmp.json && mv tmp.json final_list.json
+            
+            # Merge and filter out bots
+            jq -s '.[0] + [.[1][] | select(.type != "Bot")]' contributors.json <(echo "$RESPONSE") > tmp.json && mv tmp.json contributors.json
+            
+            if [ "$COUNT" -lt 100 ]; then break; fi
             PAGE=$((PAGE + 1))
           done
-          # Filters for actual merged PRs and unique users
-          jq '[.[] 
-            | select(.merged_at != null and .user != null and .user.type != "Bot") 
-            | .user.login] 
-            | unique 
-            | sort' final_list.json > contributors.json
-      - name: Build Gallery HTML
+          
+          # Extract only logins
+          jq '[.[] | .login] | unique' contributors.json > contributor_logins.json
+
+      - name: Build Contributor Grid
         run: |
           set -euo pipefail
-          GALLERY_HTML="<div align=\"center\">"
-          for USERNAME in $(jq -r '.[]' contributors.json); do
-            GALLERY_HTML="${GALLERY_HTML}<a href=\"https://github.com/${USERNAME}\" style=\"display:inline-block;text-decoration:none;color:inherit;margin:6px;\">\n  <img src=\"https://github.com/${USERNAME}.png\" width=\"80\" height=\"80\" loading=\"lazy\" title=\"${USERNAME}\" style=\"border-radius:50%;object-fit:cover;border:2px solid #eee;\" alt=\"${USERNAME}\" />\n  <div style=\"font-size:12px;margin-top:6px;\">@${USERNAME}</div>\n</a>"
+          
+          # Create an HTML grid: 6 columns, professional layout
+          echo "<table border=\"0\">" > gallery.html
+          echo "  <tr>" >> gallery.html
+          
+          COL=0
+          for USERNAME in $(jq -r '.[]' contributor_logins.json); do
+            if [ "$COL" -eq 6 ]; then
+              echo "  </tr>" >> gallery.html
+              echo "  <tr>" >> gallery.html
+              COL=0
+            fi
+            
+            echo "    <td align=\"center\" width=\"120\">" >> gallery.html
+            echo "      <a href=\"https://github.com/${USERNAME}\">" >> gallery.html
+            echo "        <img src=\"https://github.com/${USERNAME}.png?size=100\" width=\"100\" height=\"100\" style=\"border-radius:50%; border:2px solid #555;\" alt=\"${USERNAME}\" /><br />" >> gallery.html
+            echo "        <sub><b>@${USERNAME}</b></sub>" >> gallery.html
+            echo "      </a>" >> gallery.html
+            echo "    </td>" >> gallery.html
+            
+            COL=$((COL + 1))
           done
-          GALLERY_HTML="${GALLERY_HTML}</div>"
-          echo "$GALLERY_HTML" > gallery_fragment.txt
+          
+          # Fill remaining cells in the last row if needed
+          while [ "$COL" -lt 6 ] && [ "$COL" -gt 0 ]; do
+             echo "    <td width=\"120\"></td>" >> gallery.html
+             COL=$((COL + 1))
+          done
+          
+          echo "  </tr>" >> gallery.html
+          echo "</table>" >> gallery.html
 
       - name: Update README.md
         run: |
           set -euo pipefail
-          # Safety check for markers
-          start_count=$(grep -c '<!-- CONTRIBUTORS_START -->' README.md || true)
-          end_count=$(grep -c '<!-- CONTRIBUTORS_END -->' README.md || true)
-          if [ "$start_count" -ne 1 ] || [ "$end_count" -ne 1 ]; then
-            echo "Error: README.md must contain exactly one pair of markers."
+          
+          # Check for markers
+          if ! grep -q "<!-- CONTRIBUTORS_START -->" README.md || ! grep -q "<!-- CONTRIBUTORS_END -->" README.md; then
+            echo "Error: Markers missing in README.md"
             exit 1
           fi
 
-          start_line=$(grep -n '<!-- CONTRIBUTORS_START -->' README.md | cut -d: -f1)
-          end_line=$(grep -n '<!-- CONTRIBUTORS_END -->' README.md | cut -d: -f1)
-          if [ "$start_line" -ge "$end_line" ]; then
-            echo "Error: CONTRIBUTORS_START must appear before CONTRIBUTORS_END."
-            exit 1
-          fi
-          
-          sed -i '/<!-- CONTRIBUTORS_START -->/,/<!-- CONTRIBUTORS_END -->/ {
-            /<!-- CONTRIBUTORS_START -->/! { /<!-- CONTRIBUTORS_END -->/! d; }
-          }' README.md
-          sed -i '/<!-- CONTRIBUTORS_START -->/r gallery_fragment.txt' README.md
- 
+          # Replace content between markers
+          # Using a temporary file for safe replacement
+          sed -n '1,/<!-- CONTRIBUTORS_START -->/p' README.md > README.new
+          cat gallery.html >> README.new
+          sed -n '/<!-- CONTRIBUTORS_END -->/,$p' README.md >> README.new
+          mv README.new README.md
+
       - name: Commit and Push
         run: |
           git config --global user.name "github-actions[bot]"
@@ -82,6 +116,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to README."
           else
-            git commit -m "docs: update contributor gallery"
-            git push
+            git commit -m "docs: update contributor gallery [skip ci]"
+            git push origin HEAD:${{ github.event.repository.default_branch }}
           fi
