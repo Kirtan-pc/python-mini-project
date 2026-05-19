@@ -36,6 +36,7 @@ function getProjectHTML(projectName) {
         'spot-the-difference': getSpotTheDifferenceHTML(),
         'flappy-game': getFlappyGameHTML(),
         '2048-game': get2048GameHTML(),
+        'color-palette': getColorPaletteHTML(),
     };
     
     return projects[projectName] || '<h2>Project Coming Soon!</h2>';
@@ -3767,6 +3768,7 @@ function initializeProject(projectName) {
         'flappy-game': initFlappyGame,
         'simon-says': initSimonSays,
         '2048-game': init2048Game,
+        'color-palette': initColorPalette, 
         'math-quiz': initMathQuiz,
     };
     
