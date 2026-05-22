@@ -2,7 +2,7 @@ function getFlamesHTML() {
     return `
         <div class="project-content">
             <h2>💖 FLAMES Game</h2>
-            <p class="project-desc">Discover your relationship status!</p>
+            <p class="project-desc">Discover your <strong>relationship status</strong> and calculate your <strong>Compatibility, Rivalry, </strong> or <strong>Nuisance</strong> factor!</p>
             <div class="flames-container">
                 <div class="flames-legend">
                     <div class="legend-item">F - Friends</div>
@@ -150,26 +150,38 @@ function getFlamesHTML() {
 }
 
 function initFlames() {
+    const calculateBtn = document.getElementById('calculateFlames');
     const name1Input = document.getElementById('name1');
     const name2Input = document.getElementById('name2');
-    const calculateBtn = document.getElementById('calculateFlames');
     const resultDiv = document.getElementById('flamesResult');
-    
+
+    if (!calculateBtn || !name1Input || !name2Input || !resultDiv) return;
+
     const relationshipData = {
-        'F': { name: 'Friends', emoji: '👫', message: 'You two are best friends forever!' },
-        'L': { name: 'Love', emoji: '❤️', message: 'True love is in the air!' },
-        'A': { name: 'Affection', emoji: '🥰', message: 'Sweet affection between you!' },
-        'M': { name: 'Marriage', emoji: '💍', message: 'Wedding bells are ringing!' },
-        'E': { name: 'Enemies', emoji: '😠', message: 'Maybe not the best match...' },
-        'S': { name: 'Siblings', emoji: '👨‍👩‍👧', message: 'Like brother and sister!' }
+        F: { rel: 'Friends', emoji: '🤝', metric: 'Bond Strength', vibe: 'A bond that never breaks!' },
+        L: { rel: 'Love', emoji: '❤️', metric: 'Compatibility Score', vibe: 'Pure romantic chemistry!' },
+        A: { rel: 'Affection', emoji: '😊', metric: 'Crush Intensity', vibe: 'Someone\'s blushing!' },
+        M: { rel: 'Marriage', emoji: '💍', metric: 'Marital Bliss', vibe: 'Start picking out the rings!' },
+        E: { rel: 'Enemies', emoji: '😈', metric: 'Rivalry Quotient', vibe: 'Keep your distance!' },
+        S: { rel: 'Siblings', emoji: '🏠', metric: 'Nuisance Factor', vibe: 'Stop touching my stuff!' }
     };
+
+    function renderMessage(message) {
+        resultDiv.replaceChildren();
+
+        const note = document.createElement('p');
+        note.style.color = 'var(--danger-color)';
+        note.textContent = message;
+
+        resultDiv.appendChild(note);
+    }
     
     function calculateFlames() {
         const name1 = name1Input.value.toLowerCase().replace(/\s/g, '');
         const name2 = name2Input.value.toLowerCase().replace(/\s/g, '');
         
         if (!name1 || !name2) {
-            resultDiv.innerHTML = '<p style="color: var(--danger-color);">⚠️ Please enter both names!</p>';
+            renderMessage('⚠️ Please enter both names!');
             return;
         }
         
@@ -179,51 +191,67 @@ function initFlames() {
         let name1List = name1.split('');
         let name2List = name2.split('');
         
-        const name1Copy = [...name1List];
-        for (let char of name1Copy) {
-            const index2 = name2List.indexOf(char);
+        const lettersToCheck = [...name1List];
+        for (const letter of lettersToCheck) {
+            const index2 = name2List.indexOf(letter);
             if (index2 !== -1) {
-                name1List.splice(name1List.indexOf(char), 1);
+                name1List.splice(name1List.indexOf(letter), 1);
                 name2List.splice(index2, 1);
             }
         }
         
-        const count = name1List.length + name2List.length;
+        const remainingCount = name1List.length + name2List.length;
         
-        const flames = ['F', 'L', 'A', 'M', 'E', 'S'];
-        let index = 0;
+        const letters = ['F', 'L', 'A', 'M', 'E', 'S'];
+        let position = 0;
         
-        while (flames.length > 1) {
-            index = (index + count - 1) % flames.length;
-            flames.splice(index, 1);
-            if (index === flames.length && flames.length > 0) {
-                index = 0;
+        while (letters.length > 1) {
+            position = (position + remainingCount - 1) % letters.length;
+            letters.splice(position, 1);
+            if (position === letters.length && letters.length > 0) {
+                position = 0;
             }
         }
         
-        const result = flames[0];
-        const relationship = relationshipData[result];
-        
-        resultDiv.innerHTML = `
-            <div class="result-card">
-                <div class="result-emoji">${relationship.emoji}</div>
-                <div class="result-names">${originalName1} & ${originalName2}</div>
-                <div class="result-relationship">${relationship.name}</div>
-                <div class="result-details">
-                    <div>${relationship.message}</div>
-                    <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">
-                        Remaining letters: ${count}
-                    </div>
-                </div>
-            </div>
-        `;
+        const finalLetter = letters[0];
+        const match = relationshipData[finalLetter];
+
+        resultDiv.replaceChildren();
+
+        const resultCard = document.createElement('div');
+        resultCard.className = 'result-card';
+
+        const resultEmoji = document.createElement('div');
+        resultEmoji.className = 'result-emoji';
+        resultEmoji.textContent = match.emoji;
+
+        const nameLine = document.createElement('div');
+        nameLine.className = 'result-names';
+        nameLine.textContent = `${originalName1} & ${originalName2}`;
+
+        const resultName = document.createElement('div');
+        resultName.className = 'result-relationship';
+        resultName.textContent = match.name;
+
+        const infoBlock = document.createElement('div');
+        infoBlock.className = 'result-details';
+
+        const description = document.createElement('div');
+        description.textContent = match.message;
+
+        const remainingText = document.createElement('div');
+        remainingText.style.marginTop = '1rem';
+        remainingText.style.fontSize = '0.9rem';
+        remainingText.style.opacity = '0.9';
+        remainingText.textContent = `Remaining letters: ${remainingCount}`;
+
+        infoBlock.append(description, remainingText);
+        resultCard.append(resultEmoji, nameLine, resultName, infoBlock);
+        resultDiv.appendChild(resultCard);
     }
-    
+
     calculateBtn.addEventListener('click', calculateFlames);
-    name1Input.addEventListener('keypress', (e) => {
+    [name1Input, name2Input].forEach(input => input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') calculateFlames();
-    });
-    name2Input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') calculateFlames();
-    });
+    }));
 }

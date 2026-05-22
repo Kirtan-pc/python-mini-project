@@ -3,12 +3,15 @@ function getTowerOfHanoiHTML() {
         <div class="project-content">
             <h2>🗼 Tower of Hanoi</h2>
             <div class="hanoi-container">
+                <p class="instruction" style="color: var(--text-secondary); margin-bottom: 10px;">Click on the towers to manually move disks!</p>
                 <div class="controls">
                     <label>
                         Number of Disks:
                         <input type="number" id="diskCount" min="3" max="7" value="3">
                     </label>
                     <button class="btn-solve" id="solveBtn">🎯 Solve</button>
+                    <button class="btn-solve" id="stepBtn" style="background: var(--primary-color);">⏭️ Step</button>
+                    <button class="btn-reset" id="undoBtn" style="background: var(--warning-color); color: #000;" disabled>↩️ Undo</button>
                     <button class="btn-reset" id="resetHanoi">Reset</button>
                 </div>
                 
@@ -64,11 +67,31 @@ function getTowerOfHanoiHTML() {
                 transition: var(--transition);
             }
             
-            .btn-solve:hover {
+            .btn-solve:hover:not(:disabled) {
                 transform: scale(1.05);
             }
             
             .btn-solve:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            
+            .btn-reset {
+                background: var(--danger-color);
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 50px;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: var(--transition);
+            }
+            
+            .btn-reset:hover:not(:disabled) {
+                transform: scale(1.05);
+            }
+            
+            .btn-reset:disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
             }
@@ -94,6 +117,7 @@ function getTowerOfHanoiHTML() {
                 height: auto;
                 display: block;
                 margin: 0 auto;
+                cursor: pointer;
             }
         </style>
     `;
@@ -104,6 +128,8 @@ function initTowerOfHanoi() {
     const ctx = canvas.getContext('2d');
     const diskCountInput = document.getElementById('diskCount');
     const solveBtn = document.getElementById('solveBtn');
+    const stepBtn = document.getElementById('stepBtn');
+    const undoBtn = document.getElementById('undoBtn');
     const resetBtn = document.getElementById('resetHanoi');
     const moveCountEl = document.getElementById('moveCount');
     const optimalMovesEl = document.getElementById('optimalMoves');
@@ -113,6 +139,9 @@ function initTowerOfHanoi() {
     let moveCount = 0;
     let isAnimating = false;
     let shouldStop = false;
+    let moveQueue = [];
+    let moveHistory = [];
+    let selectedTower = null;
     
     const towerX = [200, 400, 600];
     const baseY = 350;
@@ -125,7 +154,14 @@ function initTowerOfHanoi() {
         moveCount = 0;
         diskCount = parseInt(diskCountInput.value) || 3;
         isAnimating = false;
+        shouldStop = false;
+        moveQueue = [];
+        moveHistory = [];
+        selectedTower = null;
+        
         solveBtn.disabled = false;
+        stepBtn.disabled = false;
+        undoBtn.disabled = true;
         
         for (let i = diskCount; i >= 1; i--) {
             towers[0].push(i);
@@ -159,8 +195,8 @@ function initTowerOfHanoi() {
                 ctx.fillStyle = gradient;
                 ctx.fillRect(x, y, diskWidth, diskHeight - 2);
                 
-                ctx.strokeStyle = '#1e293b';
-                ctx.lineWidth = 2;
+                ctx.strokeStyle = (selectedTower === tower && disk === towers[tower].length - 1) ? '#fbbf24' : '#1e293b';
+                ctx.lineWidth = (selectedTower === tower && disk === towers[tower].length - 1) ? 4 : 2;
                 ctx.strokeRect(x, y, diskWidth, diskHeight - 2);
                 
                 ctx.fillStyle = 'white';
@@ -171,27 +207,40 @@ function initTowerOfHanoi() {
         }
     }
     
-    async function moveDisk(from, to) {
-        if (shouldStop) return;
-
+    function executeMove(from, to, saveHistory = true) {
+        if (towers[from].length === 0) return;
         const disk = towers[from].pop();
         towers[to].push(disk);
+        
+        if (saveHistory) {
+            moveHistory.push({from, to});
+            undoBtn.disabled = false;
+        }
+        
         moveCount++;
         moveCountEl.textContent = moveCount;
         
         drawTowers();
+        
+        if (towers[2].length === diskCount && !isAnimating) {
+            setTimeout(() => alert("🎉 Puzzle Solved!"), 100);
+        }
+    }
+
+    async function autoMove(from, to) {
+        if (shouldStop) return;
+        executeMove(from, to, true);
         await new Promise(resolve => setTimeout(resolve, 500));
     }
     
-    async function solveHanoi(n, from, to, aux) {
+    function generateMoves(n, from, to, aux) {
         if (n === 1) {
-            await moveDisk(from, to);
+            moveQueue.push({from, to});
             return;
         }
-        
-        await solveHanoi(n - 1, from, aux, to);
-        await moveDisk(from, to);
-        await solveHanoi(n - 1, aux, to, from);
+        generateMoves(n - 1, from, aux, to);
+        moveQueue.push({from, to});
+        generateMoves(n - 1, aux, to, from);
     }
     
     async function solve() {
@@ -202,18 +251,93 @@ function initTowerOfHanoi() {
             return;
         }
         
+        if (moveQueue.length === 0) {
+            initTowers();
+            generateMoves(diskCount, 0, 2, 1);
+        }
+        
         isAnimating = true;
         solveBtn.disabled = true;
+        stepBtn.disabled = true;
+        undoBtn.disabled = true;
         
-        await solveHanoi(diskCount, 0, 2, 1);
-
-        shouldStop = false;
+        while (moveQueue.length > 0 && !shouldStop) {
+            const nextMove = moveQueue.shift();
+            await autoMove(nextMove.from, nextMove.to);
+        }
         
         isAnimating = false;
         solveBtn.disabled = false;
+        stepBtn.disabled = false;
+        undoBtn.disabled = moveHistory.length === 0;
+        shouldStop = false;
+    }
+
+    async function step() {
+        if (isAnimating) return;
+        
+        if (moveQueue.length === 0) {
+            initTowers();
+            generateMoves(diskCount, 0, 2, 1);
+        }
+        
+        if (moveQueue.length > 0) {
+            const nextMove = moveQueue.shift();
+            executeMove(nextMove.from, nextMove.to, true);
+        }
     }
     
+    canvas.addEventListener('click', (e) => {
+        if (isAnimating) return;
+        
+        const rect = canvas.getBoundingClientRect();
+        // Calculate true x position taking into account canvas scaling
+        const scaleX = canvas.width / rect.width;
+        const x = (e.clientX - rect.left) * scaleX;
+        
+        let clickedTower = -1;
+        if (x < 300) clickedTower = 0;
+        else if (x >= 300 && x < 500) clickedTower = 1;
+        else if (x >= 500) clickedTower = 2;
+        
+        if (clickedTower === -1) return;
+        
+        if (selectedTower === null) {
+            if (towers[clickedTower].length > 0) {
+                selectedTower = clickedTower;
+                drawTowers();
+            }
+        } else {
+            if (selectedTower === clickedTower) {
+                selectedTower = null;
+                drawTowers();
+            } else {
+                moveQueue = []; // Clear auto queue on manual intervention
+                executeMove(selectedTower, clickedTower);
+                selectedTower = null;
+                drawTowers();
+            }
+        }
+    });
+
+    undoBtn.addEventListener('click', () => {
+        if (isAnimating || moveHistory.length === 0) return;
+        
+        const lastMove = moveHistory.pop();
+        const disk = towers[lastMove.to].pop();
+        towers[lastMove.from].push(disk);
+        
+        moveCount--;
+        moveCountEl.textContent = moveCount;
+        
+        undoBtn.disabled = moveHistory.length === 0;
+        moveQueue = []; 
+        selectedTower = null;
+        drawTowers();
+    });
+    
     solveBtn.addEventListener('click', solve);
+    stepBtn.addEventListener('click', step);
     resetBtn.addEventListener('click', () => {
         shouldStop = true;
         initTowers();
