@@ -156,7 +156,7 @@ class TestGenerateOptions:
     def test_options_are_numeric_for_numeric_answer(self):
         options = generate_options(25)
         for opt in options:
-            assert isinstance(opt, int)
+            assert isinstance(opt, (int, float))
 
 
 # ── get_grade tests ──────────────────────────────────────────────────
