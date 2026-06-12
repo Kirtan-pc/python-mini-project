@@ -4,12 +4,24 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 
-# Ensure NLTK downloads happen at the top level so they're available,
-# but can be verified inside main or when running.
-nltk.download('punkt')
-nltk.download('stopwords')
+
+def _ensure_nltk_resources() -> None:
+    """Download NLTK resources only if not already present."""
+    resources = {
+        'punkt': 'tokenizers/punkt',
+        'punkt_tab': 'tokenizers/punkt_tab',
+        'stopwords': 'corpora/stopwords',
+    }
+    for name, path in resources.items():
+        try:
+            nltk.data.find(path)
+        except LookupError:
+            nltk.download(name, quiet=True)
+
 
 def analyze_resume(resume_text: str) -> dict:
+    _ensure_nltk_resources()
+
     resume = resume_text.lower()
     
     # NLP processing
@@ -117,6 +129,7 @@ def analyze_resume(resume_text: str) -> dict:
         "all_skills": skills,
     }
 
+
 def main() -> None:
     print("=== 🤖 AI Resume Analyzer (Advanced NLP Version) ===")
     
@@ -158,6 +171,7 @@ def main() -> None:
     
     # Final
     print("\n🚀 Analysis Completed")
+
 
 if __name__ == "__main__":
     main()
