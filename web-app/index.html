@@ -1526,6 +1526,34 @@
         console.log('✅ Modal fix loaded');
       })();
     </script>
+    
+    <script>
+      // FIX 1: Add missing toPascalCase function
+      if (typeof window.toPascalCase !== 'function') {
+        window.toPascalCase = function(str) {
+          return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
+        };
+        console.log('✅ toPascalCase function added');
+      }
+
+      // FIX 2: Fix modal focus error
+      setTimeout(function() {
+      const modal = document.getElementById('projectModal');
+      if (modal) {
+        // Remove any broken focus code
+        modal.removeAttribute('tabindex');
+      }
+    
+      // Fix any focus-related errors
+      const activeElement = document.activeElement;
+      if (!activeElement || activeElement === document.body) {
+        document.body.setAttribute('tabindex', '-1');
+        document.body.style.outline = 'none';
+      }
+    
+      console.log('✅ Focus error fixed');
+    }, 100);
+  </script>
 
     <!-- Info Modal Popup -->
     <div id="infoModalOverlay" class="info-modal-overlay">

@@ -453,7 +453,6 @@ def generate_banner(name, category, filename):
         v_draw.text((400,225), "⇄",
                     fill=color_accent,
                     anchor="mm")
-    
     elif "pet" in n_lower or "productivity" in n_lower:
         # Cute paw print
         cx, cy = 400, 225
@@ -534,6 +533,7 @@ projects = [
     ("Productive Pet", "utilities", "productive-pet.webp"),
     ("Progress Tracker", "utilities", "progress-tracker.webp"),
     ("Reverse Hangman", "games", "reverse-hangman.webp"),
+    ("Chess Game", "games", "chess.webp"),
 
     # MATH
     ("AP/GP/AGP/HP Recognizer", "math", "progression-recognizer.webp"),
