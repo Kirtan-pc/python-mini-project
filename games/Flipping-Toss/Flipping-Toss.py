@@ -16,12 +16,14 @@ def main():
 
         if choice == "y":
             num = random.randint(1, 2)
-            # User prediction
-            prediction = input("Predict the result (H/T): ").lower().strip()
+            
+            # Sub-loop for validating user prediction without resetting the game loop
+            while True:
+                prediction = input("Predict the result (H/T): ").lower().strip()
 
-            if prediction not in ["h", "t"]:
+                if prediction in ["h", "t"]:
+                    break
                 print("❌ Invalid prediction!! Please enter 'H' or 'T'.\n")
-                continue
 
             print("🪙 Flipping...")
             time.sleep(2)
