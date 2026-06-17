@@ -1,12 +1,16 @@
-import sys
 import os
 import random
+import sys
 
-# Add project root to sys.path
+# Standardized path resolution to point to project root securely
 if "__file__" in globals():
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+    project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
 else:
-    sys.path.append(os.path.abspath(os.getcwd()))
+    project_root = os.path.abspath(os.getcwd())
+
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
 from utils.validation import get_choice, get_int
 
 # Game constants
@@ -17,6 +21,7 @@ MAX_NUMBER = 100
 VERY_CLOSE_THRESHOLD = 3
 CLOSE_THRESHOLD = 10
 NOT_CLOSE_THRESHOLD = 20
+
 
 def main() -> None:
     print("🎯 Welcome to the Number Guessing Game!\n")
@@ -58,6 +63,7 @@ def main() -> None:
                 error_invalid="⚠️ Invalid input. Please enter a whole number."
             )
             
+            # Constraint check before incrementing attempts to avoid penalties
             if not (MIN_NUMBER <= guess_num <= MAX_NUMBER):
                 print(f"⚠️ Enter a number between {MIN_NUMBER} and {MAX_NUMBER}.")
                 continue
@@ -107,6 +113,7 @@ def main() -> None:
         if again in ['n', 'no']:
             print("👋 Goodbye.")
             break
+
 
 if __name__ == "__main__":
     main()

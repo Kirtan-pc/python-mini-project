@@ -137,7 +137,7 @@ def main() -> None:
                 error_invalid="❌ Error: Please enter a valid integer!"
             )
             if limit > 10000000:
-                print("❌ Error: Limit is too high for this system's memory.")
+                print("❌ Limit too large. Maximum allowed: 10,000,000. Please enter a smaller value.")
             elif limit < 2:
                 print("⚠️ No prime numbers exist below 2.")
             else:
@@ -160,6 +160,8 @@ def main() -> None:
                 print("❌ Error: Start must be less than or equal to end!")
             elif end < 2:
                 print("❌ No prime numbers exist below 2.")
+            elif end > 10000000:
+                print("❌ Limit too large. Maximum allowed: 10,000,000. Please enter a smaller value.")
             else:
                 primes = find_primes_in_range(start, end)
                 print(f"✅ Primes between {start} and {end}: {primes}")
@@ -184,7 +186,7 @@ def main() -> None:
                 error_invalid="Please enter a valid number!"
             )
             if n > 1000000:
-                print("❌ Error: n is too large. High-range Nth primes require a Segmented Sieve.")
+                print("❌ n too large. Maximum allowed: 1,000,000. Please enter a smaller value.")
             elif n <= 0:
                 print("❌ Please enter a positive number!")
             elif n == 1:

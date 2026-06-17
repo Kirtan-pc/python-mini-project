@@ -769,6 +769,17 @@ document.addEventListener("DOMContentLoaded", function () {
  
       document.body.classList.toggle("sidebar-active", showSidebar);
       console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY);
+
+      // Hide fixed-theme-toggle if sidebar is active
+
+      const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
+      if(showSidebar){
+        fixedThemeToggle.style.display = "none";
+      }
+      else{
+        fixedThemeToggle.style.display = "block";
+      }
+
     };
  
     window.addEventListener('scroll', checkAndToggleSidebar);
@@ -788,10 +799,11 @@ document.addEventListener("DOMContentLoaded", function () {
       var q = query.toLowerCase();
 
       var catMatch = currentCategory === "all" || category === currentCategory;
-      var searchMatch =
-        title.toLowerCase().includes(q) ||
-        desc.toLowerCase().includes(q) ||
-        tags.includes(q);
+      
+      // FIX FOR ISSUE #1032: Strict Title Matching
+      // Removed description and hidden tag fuzzy-matching to prevent irrelevant 
+      // projects (like FLAMES Game) from appearing for unrelated queries.
+      var searchMatch = title.toLowerCase().includes(q);
 
       if (catMatch && searchMatch) {
         matches.push({
@@ -1284,8 +1296,42 @@ document.addEventListener("DOMContentLoaded", function () {
       removeTrap = null;
     }
     
-
-
+    recentSearchesList.innerHTML = '';
+    recentSearches.slice(0, 5).forEach((search) => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-recent-item';
+        item.innerHTML = `
+            <button type="button" class="dropdown-recent-text" aria-label="Search ${search}">
+                <i class="fas fa-history" style="opacity: 0.5; font-size: 0.9rem;"></i>
+                <span style="flex: 1; color: var(--text-secondary);">${search}</span>
+            </button>
+            <button type="button" class="dropdown-recent-remove" aria-label="Remove search">
+                <i class="fas fa-x"></i>
+            </button>
+        `;
+        
+        const textButton = item.querySelector('.dropdown-recent-text');
+        const removeBtn = item.querySelector('.dropdown-recent-remove');
+        
+        if (textButton) {
+            textButton.addEventListener('click', () => {
+                searchInput.value = search;
+                currentSearchQuery = search;
+                performSearch();
+                closeDropdown();
+            });
+        }
+        
+        if (removeBtn) {
+            removeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                recentSearches = recentSearches.filter(s => s !== search);
+                localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+                renderRecentSearches();
+            });
+        }
+    });
+    
     // Clear content
     if (modalBody) {
       modalBody.innerHTML = "";

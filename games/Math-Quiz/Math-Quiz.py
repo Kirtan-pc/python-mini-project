@@ -228,6 +228,10 @@ class MathQuizGUI:
         self.root.geometry("900x650")
         self.root.resizable(False, False)
 
+        # Flag initializations to prevent uninitialized bugs
+        self.game_active = False
+        self.game_paused = False
+
         # Background Canvas for Gradient
         self.bg_canvas = tk.Canvas(self.root, width=900, height=650,
                                    highlightthickness=0)
@@ -251,9 +255,9 @@ class MathQuizGUI:
     def create_home_screen(self):
         self.clear_panel()
         self.game_active = False
+        self.game_paused = False
         
         self.root.bind("<Escape>", self.handle_escape)
-        
 
         title = tk.Label(self.main_panel, text="🧠 MATH QUIZ",
                          font=("Helvetica", 36, "bold"),
@@ -332,6 +336,9 @@ class MathQuizGUI:
         self.hardest_question_time = 0
         self.hardest_question = "None"
 
+        self.game_active = True
+        self.game_paused = False
+
         if self.selected_difficulty == 4:
             self.difficulty = 1
         else:
@@ -361,6 +368,7 @@ class MathQuizGUI:
                                     font=("Helvetica", 16),
                                     fg="white", bg="#0f172a")
         self.lives_label.pack(side="right", padx=15)
+        
         pause_btn = RoundedButton(
             top_frame,
             text="⏸ Pause",
@@ -397,17 +405,14 @@ class MathQuizGUI:
         self.option_cells = []
 
         for i in range(4):
-            # Outer cell frame
             cell = tk.Frame(self.options_frame, bg="#1e293b")
             cell.grid(row=i // 2, column=i % 2, padx=12, pady=10)
 
-            # Inner frame to hold circle + button side by side
             inner = tk.Frame(cell, bg="#0f172a",
                              highlightthickness=1,
                              highlightbackground="#334155")
             inner.pack()
 
-            # Circle label with A / B / C / D
             circle_lbl = tk.Label(inner,
                                   text=LABELS[i],
                                   font=("Helvetica", 13, "bold"),
@@ -420,7 +425,6 @@ class MathQuizGUI:
                                   pady=8)
             circle_lbl.pack(side="left")
 
-            # Answer button
             btn = RoundedButton(inner, text="Option",
                                 width=240, height=50,
                                 bg="#0f172a",
@@ -431,7 +435,6 @@ class MathQuizGUI:
 
             self.option_buttons.append(btn)
             self.option_cells.append(cell)
-        # ────────────────────────────────────────────────
 
         self.feedback_label = tk.Label(self.main_panel, text="",
                                        font=("Helvetica", 18, "bold"),
@@ -443,75 +446,88 @@ class MathQuizGUI:
         self.score_label.config(text=f"⭐ Score: {self.score}")
         self.streak_label.config(text=f"🔥 Streak: {self.streak}")
         self.lives_label.config(text=hearts)
-    # Pause Menu Implemented
-    def toggle_pause(self):
-        self.game_paused = not self.game_paused
-        if self.game_paused:
-            self.pause_window = tk.Toplevel(self.root)
-            self.pause_window.title("Paused")
-            self.pause_window.geometry("300x220")
-            self.pause_window.resizable(False, False)
-            self.pause_window.configure(bg="#1e293b")
-            self.pause_window.transient(self.root)
-            self.pause_window.grab_set()
-            
-            pause_label = tk.Label(
-                self.pause_window,
-                text="⏸ GAME PAUSED",
-                font=("Helvetica", 20, "bold"),
-                fg="white",
-                bg="#1e293b"
-            )
-            pause_label.pack(pady=25)
-            
-            resume_btn = RoundedButton(
-                self.pause_window,
-                text="▶ Resume",
-                width=180,
-                height=45,
-                bg="#10b981",
-                active_bg="#059669",
-                font=("Helvetica", 13, "bold"),
-                command=self.resume_game
-                
-            )
-            resume_btn.pack(pady=10)
-            
-            menu_btn = RoundedButton(
-                self.pause_window,
-                text="🏠 Main Menu",
-                width=180,
-                height=45,
-                bg="#ef4444",
-                active_bg="#b91c1c",
-                font=("Helvetica", 13, "bold"),
-                command=self.return_to_menu
-            )
-            menu_btn.pack(pady=10)
-            for btn in self.option_buttons:
-                btn.command = None
-        else:
-            self.resume_game()
-            
+        
     def handle_escape(self, event=None):
         if self.game_active:
-            self.toggle_pause()
+            self.pause_game()
         else:
             self.root.destroy()
+
+    def pause_game(self):
+        if self.game_paused:
+            return
+        self.game_paused = True
+        
+        # Strip button commands temporarily to block interactive triggers
+        for btn in self.option_buttons:
+            btn.command = None
             
+        self.pause_window = tk.Toplevel(self.root)
+        self.pause_window.title("Paused")
+        self.pause_window.geometry("320x220")
+        self.pause_window.configure(bg="#1e293b")
+        self.pause_window.resizable(False, False)
+        self.pause_window.transient(self.root)
+        self.pause_window.grab_set()
+        
+        tk.Label(
+            self.pause_window,
+            text="⏸ GAME PAUSED",
+            font=("Helvetica", 22, "bold"),
+            fg="white",
+            bg="#1e293b"
+        ).pack(pady=25)
+        
+        resume_btn = RoundedButton(
+            self.pause_window,
+            text="▶ Resume",
+            width=180,
+            height=45,
+            bg="#10b981",
+            active_bg="#059669",
+            font=("Helvetica", 13, "bold"),
+            command=self.resume_game
+        )
+        resume_btn.pack(pady=10)
+        
+        home_btn = RoundedButton(
+            self.pause_window,
+            text="🏠 Home Menu",
+            width=180,
+            height=45,
+            bg="#ef4444",
+            active_bg="#b91c1c",
+            font=("Helvetica", 13, "bold"),
+            command=self.return_to_menu
+        )
+        home_btn.pack(pady=10)
+        
+        self.pause_window.protocol("WM_DELETE_WINDOW", self.resume_game)
+
     def resume_game(self):
         self.game_paused = False
-        if hasattr(self, "pause_window"):
+        if hasattr(self, "pause_window") and self.pause_window.winfo_exists():
             self.pause_window.destroy()
             
-        options = [btn.itemcget(btn.text_item, "text") for btn in self.option_buttons]
-        for btn, option in zip(self.option_buttons, options):
-            
-            btn.command = lambda opt=option: self.check_answer(opt)
+        # Safely restore context bindings matching current layouts
+        for btn in self.option_buttons:
+            option_text = btn.itemcget(btn.text_item, "text")
+            if option_text in ["Yes", "No"]:
+                btn.command = lambda opt=option_text: self.check_answer(opt)
+            elif '.' in option_text:
+                try:
+                    btn.command = lambda opt=float(option_text): self.check_answer(opt)
+                except ValueError:
+                    btn.command = lambda opt=option_text: self.check_answer(opt)
+            else:
+                try:
+                    btn.command = lambda opt=int(option_text): self.check_answer(opt)
+                except ValueError:
+                    btn.command = lambda opt=option_text: self.check_answer(opt)
             
     def return_to_menu(self):
         self.game_paused = False
-        if hasattr(self, "pause_window"):
+        if hasattr(self, "pause_window") and self.pause_window.winfo_exists():
             self.pause_window.destroy()
         self.create_home_screen()
 
@@ -537,7 +553,6 @@ class MathQuizGUI:
         for btn, option in zip(self.option_buttons, options):
             btn.config_text(str(option))
             btn.command = lambda opt=option: self.check_answer(opt)
-            # Reset button color on new question
             btn.itemconfig(btn.rect, fill="#0f172a")
             btn.itemconfig(btn.text_item, fill="white")
             btn.bg_color = "#0f172a"
@@ -589,61 +604,6 @@ class MathQuizGUI:
             self.root.after(1500, self.game_over)
         else:
             self.root.after(1200, self.load_question)
-    
-    # Pause menu implemented
-    def pause_game(self):
-        if self.game_paused:
-            return
-        self.game_paused = True
-        pause_window = tk.Toplevel(self.root)
-        pause_window.title("Paused")
-        pause_window.geometry("320x220")
-        pause_window.configure(bg="#1e293b")
-        pause_window.resizable(False, False)
-        
-        tk.Label(
-            pause_window,
-            text="⏸ GAME PAUSED",
-            font=("Helvetica", 22, "bold"),
-            fg="white",
-            bg="#1e293b"
-        ).pack(pady=25)
-        
-        def resume_game():
-            self.game_paused = False
-            pause_window.destroy()
-            
-        def return_home():
-            self.game_paused = False
-            pause_window.destroy()
-            self.create_home_screen()
-            
-        
-        resume_btn = RoundedButton(
-            pause_window,
-            text="▶ Resume",
-            width=180,
-            height=45,
-            bg="#10b981",
-            active_bg="#059669",
-            font=("Helvetica", 13, "bold"),
-            command=resume_game
-        )
-        resume_btn.pack(pady=10)
-        
-        home_btn = RoundedButton(
-            pause_window,
-            text="🏠 Home Menu",
-            width=180,
-            height=45,
-            bg="#ef4444",
-            active_bg="#b91c1c",
-            font=("Helvetica", 13, "bold"),
-            command=return_home
-        )
-        home_btn.pack(pady=10)
-        
-        pause_window.protocol("WM_DELETE_WINDOW", resume_game)
 
     def get_grade(self, accuracy):
         if accuracy >= 90: return "S 🌟"

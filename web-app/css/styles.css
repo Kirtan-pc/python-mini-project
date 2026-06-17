@@ -587,6 +587,35 @@ body.sidebar-active .sidebar-dock {
   transition: all var(--duration-fast) ease-in;
 }
 
+.fixed-theme-toggle {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 1101;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.fixed-theme-toggle:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--border-accent);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 900px) {
+  .fixed-theme-toggle {
+    top: 14px;
+    left: 14px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
 .sound-toggle:hover,
 .theme-toggle:hover {
   background: var(--accent-soft);
@@ -2761,6 +2790,15 @@ body.sidebar-active .sidebar-dock {
   color: var(--accent);
 }
 
+body.sidebar-active:not(.sidebar-collapsed) .playground-section {
+  padding-left: 296px !important;
+}
+
+body.sidebar-collapsed .playground-section {
+  padding-left: 128px !important;
+}
+
+
 /* ── CodeMirror 6 Editor Container ─────────────────────────── */
 #pythonEditor {
   flex: 1;
@@ -3026,13 +3064,6 @@ body.sidebar-active .sidebar-dock {
   text-decoration: none;
 }
 
-.footer-social-icons a:hover {
-  background: var(--accent-soft);
-  border-color: var(--border-accent);
-  color: var(--accent);
-  transform: translateY(-2px);
-}
-
 .footer-links h3 {
   font-family: var(--font-sans);
   font-size: 0.85rem;
@@ -3160,8 +3191,8 @@ body.sidebar-active .sidebar-dock {
   background: var(--accent-soft);
   border-color: var(--border-accent);
   color: var(--accent);
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 10px 20px rgba(34, 197, 94, 0.16);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(34, 197, 94, 0.14);
 }
 
 .footer-social-icons a:hover::before {
@@ -3170,7 +3201,7 @@ body.sidebar-active .sidebar-dock {
 }
 
 .footer-social-icons a:active {
-  transform: translateY(-1px) scale(0.98);
+  transform: translateY(0);
 }
 
 .footer-links h3 {
@@ -6363,4 +6394,5 @@ body.sidebar-active .projects-section,
 body.sidebar-collapsed .projects-section {
   padding-left: 0 !important;
   padding-right: 0 !important;
+}
 }

@@ -10,7 +10,7 @@ import os
 from datetime import datetime
 from collections import defaultdict
 
-DATA_FILE = "budget_data.csv"
+DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "budget_data.csv")
 FIELDNAMES = ["date", "type", "category", "description", "amount"]
 
 # ─────────────────────────────────────────────

@@ -34,11 +34,14 @@
     />
   </head>
   <body class="sidebar-active">
+    <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
+      <i class="fas fa-moon" aria-hidden="true"></i>
+    </button>
     <!-- Scroll Progress Bar -->
     <div id="scrollProgressContainer" aria-label="Page scroll progress">
       <div id="scrollProgressBar"></div>
     </div>
-
+    
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
     <!-- Cursor Glow -->
@@ -575,20 +578,6 @@
               <kbd>Tab</kbd> inserts 4 spaces
             </p>
           </div>
-
-                <div class="project-card" data-project="nqueens" data-category="utilities">
-                <div class="card-icon">👑</div>
-                <h3>N-Queen Problem Solver</h3>
-                <p>Place queens safely on the board using backtracking.</p>
-                 <button class="btn-play">Try It</button>
-                </div>
-
-
-                <div class="project-card" data-category="utilities" data-project="tower-of-hanoi">
-                    <div class="card-icon">🗼</div>
-                    <h3>Tower of Hanoi</h3>
-                    <p>Solve the classic puzzle!</p>
-                    <button class="btn-play">Try It</button>
           <div class="playground-body">
             <div class="editor-panel">
               <div class="panel-header">
@@ -886,6 +875,8 @@
     <script defer src="js/playground.js"></script>
     <script defer type="module" src="js/main.js"></script>
     <script defer src="js/hero-canvas.js"></script>
+    <script defer src="js/projects/war-card-game.js"></script>
+    <script defer src="js/projects/number-sliding-puzzle.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         if (typeof lucide !== "undefined") {
@@ -903,6 +894,13 @@
         // ALL projects from your js/projects/ folder
         const projectsData = [
           // GAMES (20+)
+          {
+            project: "number-sliding-puzzle",
+            title: "Number Sliding Puzzle",
+            category: "games",
+            desc: "Arrange tiles in order by sliding them into empty space",
+            tags: "game,puzzle,sliding,numbers",
+          },
           {
             project: "2048-game",
             title: "2048 Game",
@@ -1014,6 +1012,13 @@
             category: "games",
             desc: "Friendship relationship calculator",
             tags: "game,relationship",
+          },
+          {
+            project: "war-card-game",
+            title: "War Card Game",
+            category: "games",
+            desc: "A classic two-player card game based on comparing rank values",
+            tags: "game,cards,multiplayer,war",
           },
 
           // MATH (15+)
@@ -1354,10 +1359,10 @@
             const icon = toggle.querySelector("i");
             if (icon) {
               if (theme === "dark") {
-                icon.className = "fas fa-sun";
+                icon.className = "fas fa-moon";
                 toggle.setAttribute("aria-label", "Switch to light mode");
               } else {
-                icon.className = "fas fa-moon";
+                icon.className = "fas fa-sun";
                 toggle.setAttribute("aria-label", "Switch to dark mode");
               }
             }
@@ -1391,11 +1396,7 @@
 
         // Add click listeners to all theme toggles
         themeToggles.forEach((toggle) => {
-          // Remove any existing listeners
-          const newToggle = toggle.cloneNode(true);
-          toggle.parentNode.replaceChild(newToggle, toggle);
-
-          newToggle.addEventListener("click", function (e) {
+          toggle.addEventListener("click", function (e) {
             e.preventDefault();
             const current = html.getAttribute("data-theme");
             const next = current === "light" ? "dark" : "light";
@@ -1544,6 +1545,34 @@
         console.log('✅ Modal fix loaded');
       })();
     </script>
+    
+    <script>
+      // FIX 1: Add missing toPascalCase function
+      if (typeof window.toPascalCase !== 'function') {
+        window.toPascalCase = function(str) {
+          return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
+        };
+        console.log('✅ toPascalCase function added');
+      }
+
+      // FIX 2: Fix modal focus error
+      setTimeout(function() {
+      const modal = document.getElementById('projectModal');
+      if (modal) {
+        // Remove any broken focus code
+        modal.removeAttribute('tabindex');
+      }
+    
+      // Fix any focus-related errors
+      const activeElement = document.activeElement;
+      if (!activeElement || activeElement === document.body) {
+        document.body.setAttribute('tabindex', '-1');
+        document.body.style.outline = 'none';
+      }
+    
+      console.log('✅ Focus error fixed');
+    }, 100);
+  </script>
 
     <!-- Info Modal Popup -->
     <div id="infoModalOverlay" class="info-modal-overlay">
