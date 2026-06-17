@@ -243,6 +243,19 @@ def generate_banner(name, category, filename):
         v_draw.line([(cx, 50), (cx, 400)], fill=(255,255,255,80), width=2)
         for r in [50, 100, 150]:
             v_draw.ellipse([cx-r, cy-r, cx+r, cy+r], outline=color_accent, width=2)
+    elif "fourier" in n_lower or "series" in n_lower:
+        # Drawing epicycles
+        cx, cy = 300, 225
+        # Circles
+        v_draw.ellipse([cx-80, cy-80, cx+80, cy+80], outline=color_accent, width=2)
+        v_draw.ellipse([cx+80-30, cy-30, cx+80+30, cy+30], outline=color_accent, width=1)
+        # Waveform line
+        pts = []
+        for x in range(cx + 150, 750, 5):
+            y = cy - 80 * math.sin((x - cx - 150) * 0.05) - 30 * math.sin((x - cx - 150) * 0.15)
+            pts.append((x, y))
+        v_draw.line(pts, fill=color_accent, width=3)
+        v_draw.line([(cx+110, cy), (cx+150, pts[0][1])], fill=(255,255,255,100), width=2, joint="curve")
     elif "collatz" in n_lower:
         # Beautiful branching curves representing paths
         cx, cy = 400, 380
@@ -563,6 +576,7 @@ projects = [
     ("Bubble Sort", "math", "bubble-sort.webp"),
     ("Tower of Hanoi", "math", "tower-of-hanoi.webp"),
     ("Matrix Calculator", "math", "matrix-calculator.webp"),
+    ("Fourier Series", "math", "fourier-series.webp"),
 
     # UTILITIES
     ("Morse Code", "utilities", "morse-code.webp"),

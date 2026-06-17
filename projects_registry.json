@@ -602,5 +602,21 @@
       "accuracy"
     ],
     "path": "utilities/Typing-Speed-Tester/Typing-Speed-Tester.py"
+  },
+  {
+    "name": "Fourier Series Visualizer",
+    "emoji": "📈",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Explore how complex waveforms can be approximated using harmonics.",
+    "keywords": [
+      "fourier",
+      "series",
+      "visualizer",
+      "math",
+      "wave",
+      "harmonics"
+    ],
+    "path": "math/Fourier-Series-Visualizer/Fourier-Series-Visualizer.py"
   }
 ]
