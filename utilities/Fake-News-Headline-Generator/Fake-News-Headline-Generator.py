@@ -197,62 +197,68 @@ templates = [
     "JUST IN: {subject} officially {action} {target}!"
 ]
 
-last_headline = ""
 
-print("AVAILABLE MODES: GENERAL | SPORTS | POLITICAL | CHAOTIC")
+def main():
+    last_headline = ""
 
-mode = input("SELECT MODE: ").strip().lower()
+    print("AVAILABLE MODES: GENERAL | SPORTS | POLITICAL | CHAOTIC")
 
-if mode not in modes:
-    mode = "general"
+    mode = input("SELECT MODE: ").strip().lower()
 
-custom_subject = input("ENTER CUSTOM SUBJECT (OPTIONAL): ").strip()
-custom_target = input("ENTER CUSTOM TARGET (OPTIONAL): ").strip()
+    if mode not in modes:
+        mode = "general"
 
-current_mode = modes[mode]
-subjects = current_mode["subjects"][:]
-if custom_subject:
-    subjects.append(custom_subject)
+    custom_subject = input("ENTER CUSTOM SUBJECT (OPTIONAL): ").strip()
+    custom_target = input("ENTER CUSTOM TARGET (OPTIONAL): ").strip()
 
-while True:
-    subject = random.choice(subjects)
+    current_mode = modes[mode]
+    subjects = current_mode["subjects"][:]
+    if custom_subject:
+        subjects.append(custom_subject)
 
-    action = random.choice(list(current_mode["actions"].keys()))
+    while True:
+        subject = random.choice(subjects)
 
-    action_data = current_mode["actions"][action]
+        action = random.choice(list(current_mode["actions"].keys()))
 
-    targets = action_data["items"][:]
+        action_data = current_mode["actions"][action]
 
-    if custom_target:
-        targets.append(custom_target)
+        targets = action_data["items"][:]
 
-    target = random.choice(targets)
+        if custom_target:
+            targets.append(custom_target)
 
-    headline = random.choice(templates).format(
-        subject=subject,
-        action=action,
-        target=target
-    )
+        target = random.choice(targets)
 
-    while headline == last_headline:
         headline = random.choice(templates).format(
             subject=subject,
             action=action,
             target=target
         )
 
-    last_headline = headline
+        while headline == last_headline:
+            headline = random.choice(templates).format(
+                subject=subject,
+                action=action,
+                target=target
+            )
 
-    print("\n" + headline)
+        last_headline = headline
 
-    user_input = input(
-        "\nDO YOU WANT ANOTHER HEADLINE? (YES/NO): "
-    ).strip().lower()
+        print("\n" + headline)
 
-    if user_input == "no":
-        break
+        user_input = input(
+            "\nDO YOU WANT ANOTHER HEADLINE? (YES/NO): "
+        ).strip().lower()
 
-    if user_input not in ["yes", "no"]:
-        print("INVALID INPUT. GENERATING ANOTHER HEADLINE...")
+        if user_input == "no":
+            break
 
-print("\nTHANKS FOR USING THE FAKE NEWS GENERATOR. HAVE A FUN DAY!")
+        if user_input not in ["yes", "no"]:
+            print("INVALID INPUT. GENERATING ANOTHER HEADLINE...")
+
+    print("\nTHANKS FOR USING THE FAKE NEWS GENERATOR. HAVE A FUN DAY!")
+
+
+if __name__ == "__main__":
+    main()

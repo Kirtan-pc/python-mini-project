@@ -8,6 +8,26 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 from utils.validation import get_int, get_yes_no
 
 
+def is_solvable(numbers):
+    """
+    Determines if the 8-puzzle board configuration is solvable.
+    An 8-puzzle (3x3 grid) is solvable if the number of inversions is even.
+    The blank tile (0) is ignored when counting inversions. 
+    """
+    # Filter out the blank tile(0)
+
+    tiles = [n for n in numbers if n != 0]
+    inversions = 0
+    for i in range(len(tiles)):
+        for j in range(i + 1, len(tiles)):
+            if tiles[i] > tiles[j]:
+                inversions += 1
+
+    # return True if inversions count is even, False otherwise
+
+    return inversions % 2 == 0
+
+
 def main():
     print("🧩 Emoji Sliding Puzzle Game 🧩")
 
@@ -15,7 +35,10 @@ def main():
         print("Arrange the numbers in correct order!\n")
 
         numbers = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-        random.shuffle(numbers)
+        while True:
+            random.shuffle(numbers)
+            if is_solvable(numbers) and numbers != [1, 2, 3, 4, 5, 6, 7, 8, 0]:
+                break
 
         puzzle = [
             numbers[0:3],

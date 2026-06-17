@@ -1,4 +1,4 @@
-﻿// Project Registry
+// Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
 function getProjectHTML(projectName) {
@@ -1595,6 +1595,24 @@ function getProjectHTML(projectName) {
 
 const projectInstructions = {
   // GAMES
+  "war-card-game": {
+    title: "⚔️ How to Play War Card Game",
+    steps: [
+      "Enter names or check the option to play against the CPU.",
+      "Each player starts with a deck of 26 cards.",
+      "Click 'Draw / Battle' to draw the top card from both decks.",
+      "The player with the higher card rank wins the round and gets a point.",
+      "Ace is the highest, 2 is the lowest.",
+      "Play continues until all cards are drawn. The player with the most points wins!"
+  "number-sliding-puzzle": {
+    title: "🧩 How to Play Number Sliding Puzzle",
+    steps: [
+      "Use arrow keys (← ↑ → ↓) or click/tap on tiles next to the empty space to slide them.",
+      "Arrange the numbers in ascending order from 1 to 8, with the blank space at the bottom right.",
+      "A moves counter keeps track of your steps.",
+      "Click the Reset button to restart the game."
+    ]
+  },
   "2048-game": {
     title: "🎮 How to Play 2048",
     steps: [
@@ -1729,6 +1747,16 @@ const projectInstructions = {
       "Beat the dealer to win"
     ]
   },
+  "reverse-hangman": {
+  title: "🤖 How to Play Reverse Hangman",
+  steps: [
+    "Think of a secret word from the dictionary (40+ words available)",
+    "The AI tries to guess your word using letter frequency analysis",
+    "Tell the AI if its guess is correct or not",
+    "AI gets 8 attempts max — can you beat the computer?",
+    "Watch the hangman visual feedback as AI guesses"
+  ]
+},
 
   // MATH
   "calculator": {
@@ -1832,6 +1860,16 @@ const projectInstructions = {
       "Click Recognize to identify the sequence type"
     ]
   },
+  "matrix-calculator": {
+    title: "🧮 How to Use Matrix Calculator",
+    steps: [
+        "Select matrix dimensions (rows × columns)",
+        "Enter values into each cell",
+        "Choose operation: Addition, Subtraction, Multiplication, Transpose, Determinant, Rank, or Inverse",
+        "Click Calculate to see the result",
+        "Determinant & Inverse work only for square matrices"
+    ]
+  },
 
   // UTILITIES
   "color-palette": {
@@ -1909,7 +1947,17 @@ const projectInstructions = {
       "Mark projects as complete",
       "See your progress over time"
     ]
-  }
+  },
+  "unit-converter": {
+    title: "📏 How to Use Unit Converter",
+    steps: [
+        "Select conversion category (Length, Mass, Temperature, etc.)",
+        "Choose input and output units",
+        "Enter the value to convert",
+        "Result appears instantly",
+        "Supports multiple unit types"
+  ]
+}
 };
 
 function getProjectInstructions(projectName) {
@@ -3127,7 +3175,9 @@ function initializeProject(projectName) {
     "color-palette": "initColorPalette",
     "math-quiz": "initMathQuiz",
     "resume-analyzer": "initResumeAnalyzer",
-    "caesar-cipher": "initCaesarCipher"
+    "caesar-cipher": "initCaesarCipher",
+    "war-card-game": "initWarCardGame"
+    "number-sliding-puzzle": "initNumberSlidingPuzzle"
   };
 
   const initializerName = initializers[projectName];

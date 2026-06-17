@@ -100,6 +100,18 @@ def generate_banner(name, category, filename):
             y = 120 + (i // 2) * 120
             v_draw.rounded_rectangle([x, y, x + 140, y + 90], radius=12, fill=(255,255,255,8), outline=color_accent, width=2)
             v_draw.text((x + 70, y + 45), val, fill=color_accent, anchor="mm")
+    elif "sliding" in n_lower or "puzzle" in n_lower:
+        # Draw a 3x3 grid with sliding numbers
+        for i in range(9):
+            if i == 8:  # Empty space
+                continue
+            r_idx = i // 3
+            c_idx = i % 3
+            x = 240 + c_idx * 110
+            y = 120 + r_idx * 75
+            val = str(i + 1)
+            v_draw.rounded_rectangle([x, y, x + 90, y + 60], radius=10, fill=(255,255,255,12), outline=color_accent, width=2)
+            v_draw.text((x + 45, y + 30), val, fill=color_accent, anchor="mm")
     elif "fibonacci" in n_lower:
         # Draw golden spiral
         cx, cy = 400, 225
@@ -534,6 +546,7 @@ projects = [
     ("Progress Tracker", "utilities", "progress-tracker.webp"),
     ("Reverse Hangman", "games", "reverse-hangman.webp"),
     ("Chess Game", "games", "chess.webp"),
+    ("Number Sliding Puzzle", "games", "number-sliding-puzzle.webp"),
 
     # MATH
     ("AP/GP/AGP/HP Recognizer", "math", "progression-recognizer.webp"),

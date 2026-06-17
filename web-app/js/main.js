@@ -728,6 +728,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
       document.body.classList.toggle("sidebar-active", showSidebar);
       console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY);
+
+      // Hide fixed-theme-toggle if sidebar is active
+
+      const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
+      if(showSidebar){
+        fixedThemeToggle.style.display = "none";
+      }
+      else{
+        fixedThemeToggle.style.display = "block";
+      }
+
     };
 
     window.addEventListener('scroll', checkAndToggleSidebar);
@@ -1293,7 +1304,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }, 50);
     }
     lastFocusedElement = null;
-  })
+  }
 
   if (modalClose) modalClose.addEventListener("click", closeProjectSafe);
   if (modal) {
@@ -1851,5 +1862,4 @@ projectCards.forEach(card => {
   // Initial card filtering state update
   updateProjectVisibility(currentCategory, currentSearchQuery);
   window.updateRecentlyViewed();
-}
 });

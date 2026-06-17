@@ -34,7 +34,7 @@
     />
   </head>
   <body class="sidebar-active">
-    <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" type="button">
+    <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
       <i class="fas fa-moon" aria-hidden="true"></i>
     </button>
     <!-- Scroll Progress Bar -->
@@ -872,6 +872,8 @@
     <script defer src="js/playground.js"></script>
     <script defer type="module" src="js/main.js"></script>
     <script defer src="js/hero-canvas.js"></script>
+    <script defer src="js/projects/war-card-game.js"></script>
+    <script defer src="js/projects/number-sliding-puzzle.js"></script>
     <script>
       lucide.createIcons();
     </script>
@@ -885,6 +887,13 @@
         // ALL projects from your js/projects/ folder
         const projectsData = [
           // GAMES (20+)
+          {
+            project: "number-sliding-puzzle",
+            title: "Number Sliding Puzzle",
+            category: "games",
+            desc: "Arrange tiles in order by sliding them into empty space",
+            tags: "game,puzzle,sliding,numbers",
+          },
           {
             project: "2048-game",
             title: "2048 Game",
@@ -996,6 +1005,13 @@
             category: "games",
             desc: "Friendship relationship calculator",
             tags: "game,relationship",
+          },
+          {
+            project: "war-card-game",
+            title: "War Card Game",
+            category: "games",
+            desc: "A classic two-player card game based on comparing rank values",
+            tags: "game,cards,multiplayer,war",
           },
 
           // MATH (15+)
