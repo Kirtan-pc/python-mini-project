@@ -6451,3 +6451,41 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer button {
     transition: padding-left 280ms cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
+
+.sidebar-mobile-close {
+  display: none;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--bg-glass);
+  color: var(--text-primary);
+  font-size: 16px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+}
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+@media (max-width: 768px) {
+  .sidebar-mobile-close {
+    display: flex;
+  }
+  body.sidebar-active .sidebar-backdrop {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

@@ -350,32 +350,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ── Mobile Sidebar Toggle ──────────────────────────────── */
-  var mobileSidebarToggle = document.getElementById("mobileSidebarToggle");
+  /* ── Mobile Sidebar Close ──────────────────────────────── */
   var mainSidebar = document.getElementById("mainSidebar");
-  if (mobileSidebarToggle && mainSidebar) {
-    mobileSidebarToggle.addEventListener("click", function () {
-      var active = mainSidebar.classList.toggle("open");
-      mobileSidebarToggle.setAttribute("aria-expanded", active);
-      var icon = mobileSidebarToggle.querySelector("i");
-      if (icon) icon.className = active ? "fas fa-times" : "fas fa-bars";
-    });
+  var sidebarMobileClose = document.getElementById("sidebarMobileClose");
+  var sidebarBackdrop = document.getElementById("sidebarBackdrop");
 
-    document.addEventListener("click", function (e) {
-      if (
-        mainSidebar &&
-        mobileSidebarToggle &&
-        !mainSidebar.contains(e.target) &&
-        e.target !== mobileSidebarToggle &&
-        mainSidebar.classList.contains("open")
-      ) {
-        mainSidebar.classList.remove("open");
-        mobileSidebarToggle.setAttribute("aria-expanded", "false");
-        var icon = mobileSidebarToggle.querySelector("i");
-        if (icon) icon.className = "fas fa-bars";
-      }
-    });
+  function closeMobileSidebar() {
+    document.body.classList.remove("sidebar-active");
   }
+
+  if (sidebarMobileClose) {
+    sidebarMobileClose.addEventListener("click", closeMobileSidebar);
+  }
+  if (sidebarBackdrop) {
+    sidebarBackdrop.addEventListener("click", closeMobileSidebar);
+  }
+  document.addEventListener("keydown", function (e) {
+    if (
+      e.key === "Escape" &&
+      document.body.classList.contains("sidebar-active")
+    ) {
+      closeMobileSidebar();
+    }
+  });
 
   /* ── Desktop Sidebar Toggle ──────────────────────────────── */
   var desktopSidebarToggle = document.getElementById("sidebarCollapseBtn");
