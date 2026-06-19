@@ -1,6 +1,43 @@
 import os
 import math
+import warnings
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
+
+
+def load_fonts():
+    """Load title/subtitle fonts with a robust, OS-independent fallback chain.
+
+    Tries a bundled font first (works identically on every OS), then falls
+    back to common Windows/Linux system fonts. If nothing is found, warns
+    loudly instead of silently rendering unreadable bitmap text.
+    """
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    bundled_font = os.path.join(script_dir, "assets", "fonts", "DejaVuSans-Bold.ttf")
+
+    candidates = [
+        bundled_font,                                              # 1. Repo-bundled font (preferred)
+        "segoeui.ttf",                                             # 2. Windows
+        "arial.ttf",                                               # 3. Windows fallback
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",    # 4. Common Linux path
+    ]
+
+    for path in candidates:
+        try:
+            font_title = ImageFont.truetype(path, 36)
+            font_subtitle = ImageFont.truetype(path, 16)
+            return font_title, font_subtitle
+        except IOError:
+            continue
+
+    warnings.warn(
+        "No usable .ttf font found (checked bundled, Windows, and common Linux paths). "
+        "Falling back to PIL's default bitmap font - banner text will be unreadable. "
+        "Add a .ttf to assets/fonts/ to fix this.",
+        RuntimeWarning,
+        stacklevel=2,
+    )
+    return ImageFont.load_default(), ImageFont.load_default()
+
 
 def create_radial_gradient(color_center, color_edge):
     """Create a high-fidelity smooth radial gradient by resizing a eased 24x24 radial dot."""
@@ -44,6 +81,12 @@ def draw_perspective_grid(draw, color):
 
 def generate_banner(name, category, filename):
     """Generate a highly customized, vector-styled banner for the card."""
+    # Load fonts once, up front, so they're available to every branch below
+    # (previously font_title was only loaded near the end, which crashed
+    # the "matrix" branch with a NameError since it referenced font_title
+    # before it existed).
+    font_title, font_subtitle = load_fonts()
+
     # Tailor color scheme by category
     if category == "games":
         color_center = (25, 10, 55)
@@ -485,6 +528,15 @@ def generate_banner(name, category, filename):
         v_draw.ellipse([cx-35, cy-40, cx-15, cy-20], fill=color_accent) # toe 1
         v_draw.ellipse([cx-10, cy-50, cx+10, cy-30], fill=color_accent) # toe 2
         v_draw.ellipse([cx+15, cy-40, cx+35, cy-20], fill=color_accent) # toe 3
+    elif "budget" in n_lower:
+        # Wallet + bar chart for budget tracker
+        cx, cy = 400, 225
+        v_draw.rounded_rectangle([cx-90, cy-50, cx+90, cy+50], radius=16, fill=(255,255,255,12), outline=color_accent, width=3)
+        v_draw.rounded_rectangle([cx+40, cy-15, cx+90, cy+15], radius=8, fill=color_accent)
+        bar_heights = [30, 55, 40, 70]
+        for i, h in enumerate(bar_heights):
+            x = 230 + i * 50
+            v_draw.rectangle([x, 320 - h, x + 30, 320], fill=color_accent)
     else:
         # Default nice abstract waves
         points = []
@@ -502,18 +554,6 @@ def generate_banner(name, category, filename):
     glass_layer = Image.new("RGBA", (800, 450))
     gl_draw = ImageDraw.Draw(glass_layer)
     gl_draw.rounded_rectangle([150, 110, 650, 340], radius=24, fill=(255, 255, 255, 14), outline=(255, 255, 255, 45), width=2)
-    
-    # Load fonts cleanly
-    try:
-        font_title = ImageFont.truetype("segoeui.ttf", 36)
-        font_subtitle = ImageFont.truetype("segoeui.ttf", 16)
-    except IOError:
-        try:
-            font_title = ImageFont.truetype("arial.ttf", 36)
-            font_subtitle = ImageFont.truetype("arial.ttf", 16)
-        except IOError:
-            font_title = ImageFont.load_default()
-            font_subtitle = ImageFont.load_default()
 
     # Draw Text Labels
     # Shadow text
@@ -527,9 +567,10 @@ def generate_banner(name, category, filename):
 
     final_img = Image.alpha_composite(composite, glass_layer).convert("RGB")
     
-    # Save Image
+    # Save Image (true WebP encoding — filenames use .webp, so save as WebP,
+    # not JPEG bytes inside a .webp container)
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    final_img.save(filename, "JPEG", quality=90)
+    final_img.save(filename, "WEBP", quality=90, method=6)
     print(f"Generated HD banner: {filename}")
 
 # Project category directory mappings
@@ -540,7 +581,7 @@ projects = [
     ("Coin Flip", "games", "coin-flip.webp"),
     ("Dice Rolling", "games", "dice-rolling.webp"),
     ("Dots & Boxes AI", "games", "dots-boxes.webp"),
-    ("Emoji Memory Game", "games", "emoji-memory-game.webp"),  # FIXED filename
+    ("Emoji Memory Game", "games", "emoji-memory-game.webp"),
     ("FLAMES Game", "games", "flames.webp"),
     ("Flappy Game", "games", "flappy-game.webp"),
     ("Hangman", "games", "hangman.webp"),
@@ -580,9 +621,12 @@ projects = [
     ("Fourier Series", "math", "fourier-series.webp"),
 
     # UTILITIES
+    # NOTE: "Tower of Hanoi" under utilities removed — it was a duplicate of
+    # the math entry above and wrote to the same "tower-of-hanoi.webp" path,
+    # silently overwriting it. If a utilities-specific banner is wanted,
+    # give it a distinct filename instead (e.g. "tower-of-hanoi-util.webp").
     ("Morse Code", "utilities", "morse-code.webp"),
     ("Number Converter", "utilities", "number-converter.webp"),
-    ("Tower of Hanoi", "utilities", "tower-of-hanoi.webp"),
     ("Typing Speed Tester", "utilities", "typing-speed-tester.webp"),
     ("Color Palette Suggestor", "utilities", "color-palette.webp"),
     ("AI Resume Analyzer", "utilities", "resume-analyzer.webp"),
