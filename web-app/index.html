@@ -877,6 +877,7 @@
     <script defer src="js/projects/word-scramble.js"></script>
     <script defer src="js/projects/snake.js"></script>
     <script defer src="js/projects/spot-the-difference.js"></script>
+    <script defer src="js/projects/sudoku-game.js"></script>
     <script defer src="js/projects/color-palette.js"></script>
     <script defer src="js/projects/resume-analyzer.js"></script>
     <script src="js/projects/caesar-cipher.js"></script>
@@ -894,7 +895,9 @@
     <script defer src="js/projects/number-sliding-puzzle.js"></script>
     <script defer src="js/projects/budget-tracker.js"></script>
     <script>
-      lucide.createIcons();
+      window.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      });
     </script>
 
     <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
@@ -1026,6 +1029,11 @@
             tags: "game,relationship",
           },
           {
+            project: "sudoku-game",
+            title: "Sudoku Solver & Game",
+            category: "games",
+            desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
+            tags: "game,puzzle,backtracking,solver",
             project: "war-card-game",
             title: "War Card Game",
             category: "games",

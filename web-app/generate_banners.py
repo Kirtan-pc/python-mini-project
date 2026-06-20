@@ -379,6 +379,32 @@ def generate_banner(name, category, filename):
         v_draw.ellipse([cx - 40, cy - 20, cx, cy + 20], fill=color_accent)
         v_draw.ellipse([cx, cy - 20, cx + 40, cy + 20], fill=color_accent)
         v_draw.polygon([(cx - 38, cy + 5), (cx + 38, cy + 5), (cx, cy + 50)], fill=color_accent)
+    elif "sudoku" in n_lower:
+        # Draw a mini neon Sudoku grid block
+        cx, cy = 400, 225
+        gx_min, gx_max = 280, 520
+        gy_min, gy_max = 105, 345
+        # Main subgrid boundaries
+        for i in range(4):
+            val = gx_min + i * 80
+            v_draw.line([(val, gy_min), (val, gy_max)], fill=color_accent, width=3)
+            val_y = gy_min + i * 80
+            v_draw.line([(gx_min, val_y), (gx_max, val_y)], fill=color_accent, width=3)
+        # Inner fine grid lines
+        for i in range(1, 9):
+            if i % 3 != 0:
+                val = gx_min + int(i * 26.6)
+                v_draw.line([(val, gy_min), (val, gy_max)], fill=color_accent_dim, width=1)
+                val_y = gy_min + int(i * 26.6)
+                v_draw.line([(gx_min, val_y), (gx_max, val_y)], fill=color_accent_dim, width=1)
+        # Sample numbers
+        digits = [("5", 0, 0), ("3", 1, 0), ("7", 2, 0),
+                  ("6", 0, 1), ("1", 1, 1), ("9", 2, 1),
+                  ("8", 0, 2), ("4", 1, 2), ("2", 2, 2)]
+        for d, r, c in digits:
+            x = gx_min + r * 80 + 40
+            y = gy_min + c * 80 + 40
+            v_draw.text((x, y), d, fill=color_accent, anchor="mm")
     elif "blackjack" in n_lower:
         # Playing cards
         def draw_card(x, y, val):
@@ -613,6 +639,7 @@ projects = [
     ("Simon Says", "games", "simon-says.webp"),
     ("Tic Tac Toe", "games", "tic-tac-toe.webp"),
     ("Spot the Difference", "games", "spot-the-difference.webp"),
+    ("Sudoku Solver & Game", "games", "sudoku-game.webp"),
     ("Productive Pet", "utilities", "productive-pet.webp"),
     ("Progress Tracker", "utilities", "progress-tracker.webp"),
     ("Reverse Hangman", "games", "reverse-hangman.webp"),
