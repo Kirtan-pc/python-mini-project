@@ -24,8 +24,16 @@ def analyze_resume(resume_text: str) -> dict:
 
     resume = resume_text.lower()
     
+    # Pre-process to protect C++, C#, and .NET from NLTK tokenization
+    PROTECTED = {"c++": "cpplang", "c#": "csharplang", ".net": "dotnetlang"}
+    for raw, placeholder in PROTECTED.items():
+        resume = resume.replace(raw, placeholder)
+    
     # NLP processing
     words = word_tokenize(resume)
+    
+    # Restore protected tokens
+    words = [PROTECTED.get(w, w) for w in words]
     
     stop_words = set(stopwords.words('english'))
     KEEP_AS_IS = {"c++", "c#", ".net"}
