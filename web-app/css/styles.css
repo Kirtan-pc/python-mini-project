@@ -5826,6 +5826,28 @@ button:focus-visible,
   -webkit-backdrop-filter: none;
 }
 
+.footer-social-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(34, 197, 94, 0.08);
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    transition: var(--transition);
+    border: 1px solid rgba(34, 197, 94, 0.15);
+    text-decoration: none;
+    transition: all 0.35s ease;
+}
+
+.footer-social-icons a:hover {
+    background: var(--accent-color);
+    color: var(--on-accent);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3);
+     transform: translateY(-5px) scale(1.08);
 .project-card:hover {
   transform: translateY(-6px);
   border-color: var(--accent-color);
@@ -5836,7 +5858,62 @@ button:focus-visible,
   background: #ffffff;
   border-color: rgba(106, 191, 141, 0.4);
 }
+.footer-social-icons .github:hover i {
+    filter: drop-shadow(0 0 4px rgba(255,255,255,0.5));
+}
 
+.footer-social-icons .github:hover {
+    background: #a09999;
+    color: #181717;
+
+    box-shadow:
+        0 0 8px rgba(255,255,255,0.35),
+        0 0 18px rgba(255,255,255,0.22),
+        0 0 32px rgba(255,255,255,0.12);
+
+    transform: translateY(-5px) scale(1.08);
+}
+
+.footer-social-icons .twitter:hover {
+    background: #1DA1F2;
+    color: white;
+    box-shadow:
+        0 0 10px rgba(29,161,242,0.8),
+        0 0 25px rgba(29,161,242,0.5),
+        0 0 45px rgba(29,161,242,0.25);
+} 
+
+.footer-social-icons .linkedin:hover {
+    background: #0A66C2;
+    color: white;
+    box-shadow:
+        0 0 10px rgba(10,102,194,0.8),
+        0 0 25px rgba(10,102,194,0.5),
+        0 0 45px rgba(10,102,194,0.25);
+}
+
+.footer-social-icons .instagram:hover {
+    background: linear-gradient(
+        135deg,
+        #f58529,
+        #dd2a7b,
+        #8134af,
+        #515bd4
+    );
+    color: white;
+
+    box-shadow:
+        0 0 12px rgba(221,42,123,0.8),
+        0 0 30px rgba(129,52,175,0.5),
+        0 0 55px rgba(81,91,212,0.25);
+}
+.footer-links h3,
+.footer-newsletter h3 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
 [data-theme="dark"] .project-card {
   background: #1e1a18;
   border-color: rgba(159, 221, 181, 0.3);
@@ -5860,6 +5937,47 @@ button:focus-visible,
   margin-bottom: 0.75rem;
   width: 100%;
 }
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+      transition: all 0.3s ease;
+       position: relative;
+    
+}
+.footer-links a::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #c084fc; /* violet */
+    position: absolute;
+    left: -12px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+    transform: translateX(6px);
+     color: #c084fc;
+}
+
+.footer-links a:hover::before {
+    opacity: 1;
+    left: -8px;
+      background: #c084fc;
+}
+.footer-links a i {
+    font-size: 0.9rem;
+    color: var(--accent-color);
+    opacity: 0.7;
+    transition: var(--transition);
+}
+
 
 .card-actions .btn-play {
   margin-top: 0;
