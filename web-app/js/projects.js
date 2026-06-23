@@ -32,6 +32,7 @@ function getProjectHTML(projectName) {
         'bubble-sort': getBubbleSortHTML(),
         'quick-sort': getQuickSortHTML(),
         'fourier-series': getFourierSeriesHTML(),
+        'merge-sort': getMergeSortHTML(),
         'pathfinding-visualizer': getPathfindingVisualizerHTML(),
         'tsp-visualizer': getTspVisualizerHTML()
     };
@@ -67,6 +68,7 @@ function initializeProject(projectName) {
         'reverse-hangman': initReverseHangman,
         'budget-tracker': initBudgetTracker,
         'fourier-series': initFourierSeries,
+        'merge-sort': initMergeSort,
         'pathfinding-visualizer': initPathfindingVisualizer,
         'tsp-visualizer': initTspVisualizer
     };
@@ -1870,6 +1872,15 @@ const projectInstructions = {
     "Process repeats until fully sorted"
   ]
 },
+"merge-sort": {
+  title: "🔀 How Merge Sort Works",
+  steps: [
+    "Enter an array of numbers",
+    "Array is divided into two halves",
+    "Each half is recursively sorted",
+    "Sorted halves are merged back together"
+  ]
+},
   "tower-of-hanoi": {
     title: "🗼 How to Solve Tower of Hanoi",
     steps: [
@@ -3202,6 +3213,7 @@ function initializeProject(projectName) {
     "binary-search": "initBinarySearch",
     "bubble-sort": "initBubbleSort",
     "quick-sort": "initQuickSort",
+    "merge-sort": "initMergeSort",
     "progression-recognizer": "initProgressionRecognizer",
     "pascal-triangle": "initPascalTriangle",
     armstrong: "initArmstrong",

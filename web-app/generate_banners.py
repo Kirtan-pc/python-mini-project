@@ -563,6 +563,26 @@ def generate_banner(name, category, filename):
         for i, h in enumerate(bar_heights):
             x = 230 + i * 50
             v_draw.rectangle([x, 320 - h, x + 30, 320], fill=color_accent)
+    elif "merge sort" in n_lower:
+        # Divide and conquer visualization - splitting bars
+        cx, cy = 400, 225
+        # Draw bars being split into halves
+        bar_vals = [4, 2, 6, 1, 5, 3, 7]
+        bar_w = 50
+        total_w = len(bar_vals) * (bar_w + 8)
+        start_x = cx - total_w // 2
+        for i, val in enumerate(bar_vals):
+            x = start_x + i * (bar_w + 8)
+            h = val * 25
+            y = cy + 80 - h
+            color = color_accent if i < len(bar_vals) // 2 else (255, 255, 255, 180)
+            v_draw.rounded_rectangle([x, y, x + bar_w, cy + 80], radius=6, fill=color)
+        # Dividing line in the middle
+        mid_x = start_x + (len(bar_vals) // 2) * (bar_w + 8) - 4
+        v_draw.line([(mid_x, cy - 60), (mid_x, cy + 90)], fill=(239, 68, 68), width=3)
+        # Arrow showing merge direction
+        v_draw.line([(cx - 80, cy - 80), (cx + 80, cy - 80)], fill=color_accent, width=2)
+        v_draw.polygon([(cx + 80, cy - 85), (cx + 95, cy - 80), (cx + 80, cy - 75)], fill=color_accent)
     elif "tsp" in n_lower or "salesperson" in n_lower:
         # Nodes connected by a path
         nodes = [(250, 150), (450, 100), (550, 250), (400, 350), (200, 300)]
@@ -668,6 +688,7 @@ projects = [
     ("Binary Search", "math", "binary-search.webp"),
     ("Bubble Sort", "math", "bubble-sort.webp"),
     ("Quick Sort", "math", "quick-sort.webp"),
+    ("Merge Sort", "math", "merge-sort.webp"),
     ("Tower of Hanoi", "math", "tower-of-hanoi.webp"),
     ("Matrix Calculator", "math", "matrix-calculator.webp"),
     ("Fourier Series", "math", "fourier-series.webp"),
