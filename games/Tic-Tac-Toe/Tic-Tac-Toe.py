@@ -35,14 +35,14 @@ def main():
         """Create a sans-serif font."""
         for n in ["Segoe UI", "Helvetica Neue", "Arial", "DejaVu Sans"]:
             try: return pygame.font.SysFont(n, size, bold=bold)
-            except: pass
+            except pygame.error: pass
         return pygame.font.Font(None, size)
 
     def mf(size: int, bold: bool = False) -> pygame.font.Font:
         """Create a monospace font."""
         for n in ["Consolas", "Courier New", "DejaVu Sans Mono"]:
             try: return pygame.font.SysFont(n, size, bold=bold)
-            except: pass
+            except pygame.error: pass
         return pygame.font.Font(None, size)
 
     F_TAG    = sf(14, bold=True)
