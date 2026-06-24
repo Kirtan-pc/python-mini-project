@@ -670,6 +670,20 @@
     "path": "utilities/TSP-Visualizer/TSP-Visualizer.py"
   },
   {
+    "name": "Chess Game",
+    "emoji": "♟️",
+    "category": "games",
+    "difficulty": "advanced",
+    "description": "Play a standard game of Chess with full rules, moves, and a beautiful UI.",
+    "keywords": [
+      "chess",
+      "board",
+      "game",
+      "strategy",
+      "two-player",
+      "ai"
+    ],
+    "path": "games/Pygame-Chess/main.py"
     "name": "2048 Game",
     "emoji": "🔢",
     "category": "games",

@@ -1637,6 +1637,15 @@ const projectInstructions = {
       "Play continues until all cards are drawn. The player with the most points wins!"
     ]
   },
+  "chess": {
+    title: "♟️ How to Play Chess",
+    steps: [
+      "Select a piece to see its valid moves highlighted.",
+      "Move pieces according to standard chess rules.",
+      "Try to put the opponent's king in checkmate.",
+      "Support local pass-and-play or vs Computer AI."
+    ]
+  },
   "number-sliding-puzzle": {
     title: "🧩 How to Play Number Sliding Puzzle",
     steps: [
@@ -3199,6 +3208,7 @@ function initDerivativeCalculator() {
 function initializeProject(projectName) {
   const initializers = {
     "tic-tac-toe": "initTicTacToe",
+    "chess": "initChess",
     "rock-paper-scissor": "initRockPaperScissor",
     "dice-rolling": "initDiceRolling",
     "coin-flip": "initCoinFlip",
