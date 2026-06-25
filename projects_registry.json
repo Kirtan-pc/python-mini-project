@@ -136,7 +136,7 @@
     "path": "math/Armstrong-Number/Armstrong-Number.py"
   },
   {
-    "name": "Simple Calculator",
+    "name": "Scientific Graphing Calculator",
     "emoji": "🧮",
     "category": "math",
     "difficulty": "beginner",
@@ -148,7 +148,7 @@
       "add",
       "subtract"
     ],
-    "path": "math/Simple-Calculator/Simple-Calculator.py"
+    "path": "math/Scientific-Graphing-Calculator/Scientific-Graphing-Calculator.py"
   },
   {
     "name": "Prime Number Analyzer",
