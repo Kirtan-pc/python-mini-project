@@ -9,7 +9,7 @@
     />
     <meta name="color-scheme" content="dark light" />
     <meta id="themeColorMeta" name="theme-color" content="#0f172a" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://pyodide-cdn2.iodide.io; base-uri 'self'; form-action 'self'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://pyodide-cdn2.iodide.io; base-uri 'self'; form-action 'self'" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -235,7 +235,7 @@
             tabindex="0"
           >
             <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
-            <span class="sidebar-label">Math Visuals</span>
+            <span class="sidebar-label">Maths Lab</span>
           </button>
           <button
             aria-selected="false"
@@ -376,14 +376,14 @@
               <img
                 class="card-banner"
                 src="assets/banners/calculator.webp"
-                alt="Calculator"
+                alt="Scientific Graphing Calculator"
                 loading="lazy"
               / loading="lazy">
               <div class="card-actions">
-                <button class="btn-play" aria-label="Play Calculator">Try It</button>
+                <button class="btn-play" aria-label="Play Scientific Graphing Calculator">Try It</button>
               </div>
 
-              <h3>Calculator</h3>
+              <h3>Scientific Graphing Calculator</h3>
               <p>Your mathematical companion!</p>
             </div>
 
@@ -605,7 +605,7 @@
     <script defer src="js/projects/flames.js"></script>
     <script defer src="js/projects/fibonacci.js"></script>
     <script defer src="js/projects/pascal-triangle.js"></script>
-    <script defer src="js/projects/calculator.js"></script>
+    <script defer src="js/projects/calculator.js?v=2"></script>
     <script defer src="js/projects/collatz.js"></script>
     <script defer src="js/projects/armstrong.js"></script>
     <script defer src="js/projects/prime-analyzer.js"></script>
@@ -618,9 +618,9 @@
     <script defer src="js/projects/math-quiz.js"></script>
     <script defer src="js/projects/simon-says.js"></script>
     <script defer src="js/projects/fourier-series.js"></script>
-    <script defer src="js/projects.js"></script>
+    <script defer src="js/projects.js?v=3"></script>
     <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script defer type="module" src="js/main.js"></script>
+    <script defer type="module" src="js/main.js?v=2"></script>
     <script>
       window.addEventListener('DOMContentLoaded', () => {
         if (typeof lucide !== 'undefined') lucide.createIcons();

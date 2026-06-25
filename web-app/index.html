@@ -13,7 +13,7 @@
   http-equiv="Content-Security-Policy"
   content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com;
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
     font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
     img-src 'self' data:;
@@ -215,7 +215,7 @@
             tabindex="-1"
           >
             <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
-            <span class="sidebar-label">Math Visuals</span>
+            <span class="sidebar-label">Maths Lab</span>
           </button>
           <button
             aria-selected="false"
@@ -905,7 +905,7 @@
     <script defer src="js/projects/flames.js"></script>
     <script defer src="js/projects/fibonacci.js"></script>
     <script defer src="js/projects/pascal-triangle.js"></script>
-    <script defer src="js/projects/calculator.js"></script>
+    <script defer src="js/projects/calculator.js?v=2"></script>
     <script defer src="js/projects/collatz.js"></script>
     <script defer src="js/projects/armstrong.js"></script>
     <script defer src="js/projects/prime-analyzer.js"></script>
@@ -940,10 +940,10 @@
     <script defer src="js/projects/fourier-series.js"></script>
     <script defer src="js/projects/pathfinding-visualizer.js?v=2"></script>
     <script defer src="js/projects/tsp-visualizer.js"></script>
-    <script defer src="js/projects.js?v=2"></script>
+    <script defer src="js/projects.js?v=3"></script>
     <script defer src="js/cm-editor.js"></script>
     <script defer src="js/playground.js"></script>
-    <script defer type="module" src="js/main.js"></script>
+    <script defer type="module" src="js/main.js?v=2"></script>
     <script defer src="js/hero-canvas.js"></script>
     <script defer src="js/projects/war-card-game.js"></script>
     <script defer src="js/projects/number-sliding-puzzle.js"></script>
@@ -1289,10 +1289,10 @@
           },
           {
             project: "calculator",
-            title: "Calculator",
-            category: "utilities",
-            desc: "Basic arithmetic calculator",
-            tags: "utility,math",
+            title: "Scientific Graphing Calculator",
+            category: "math",
+            desc: "A scientific graphing calculator",
+            tags: "math,calculator",
           },
           {
             project: "progress-tracker",

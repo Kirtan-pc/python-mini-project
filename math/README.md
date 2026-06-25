@@ -15,7 +15,7 @@ This folder contains Python mini-projects focused on math concepts, number patte
 - Pascal-Triangle
 - Prime-Number-Analyzer
 - Projectile-Motion-Game
-- Simple-Calculator
+- Scientific-Graphing-Calculator
 
 ## How to Set Up and Run Any Math Project
 

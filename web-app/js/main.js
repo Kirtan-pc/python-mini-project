@@ -213,24 +213,6 @@ function showConfirm(message, onConfirm, onCancel) {
 
 window.showConfirm = showConfirm;
 
-var currentProjectName = "";
-
-function setupModalInfoButton(projectName) {
-  currentProjectName = projectName;
-  var infoBtn = document.getElementById("modalInfoBtn");
-  if (!infoBtn) return;
-
-  // Remove old listener by cloning
-  var newBtn = infoBtn.cloneNode(true);
-  infoBtn.parentNode.replaceChild(newBtn, infoBtn);
-
-  newBtn.addEventListener("click", function () {
-    if (typeof getProjectInstructions === "function") {
-      var info = getProjectInstructions(currentProjectName);
-      showInfoModal(info.title, info.steps);
-    }
-  });
-}
 
 /* ── DOMContentLoaded ──────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", function () {
