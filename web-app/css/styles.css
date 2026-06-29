@@ -3774,10 +3774,6 @@ body.sidebar-collapsed .playground-section {
     width: 100%;
   }
 
-  .mobile-menu-toggle {
-    display: flex;
-  }
-
   .nav-controls {
     display: none;
     flex-direction: column;
@@ -6580,6 +6576,10 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
   padding: 0 !important;
 }
 
+.hamburger{
+  display: none;
+}
+
 /* Force 3 equal columns on desktop (when sidebar is expanded OR collapsed) */
 @media (min-width: 1100px) {
 
@@ -6611,6 +6611,15 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
     margin-left: 0 !important;
     width: 100% !important;
   }
+
+}
+
+@media (max-width: 1280px) {
+
+    .sticky-filter-bar{
+      display:none ;
+    } 
+
 }
 
 /* Make cards take full width of their grid cell */
@@ -7158,4 +7167,33 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
   display: flex !important;
   visibility: visible !important;
   opacity: 1 !important;
+}
+
+@media (max-width: 900px) {
+
+    .mobile-menu-toggle{
+        display:flex !important;
+        position: fixed;
+        top: 16px;
+        right: 16px;
+
+        width:44px;
+        height:44px;
+          box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+        align-items:center;
+        justify-content:center;
+
+        border-radius:12px;
+
+        z-index:9999;
+    }
+
+    .mobile-menu-toggle i{
+        font-size:22px;
+        color:var(--text);
+    }
+
 }

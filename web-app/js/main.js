@@ -453,14 +453,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ── Mobile Sidebar Toggle ────────────────────────────────── */
-  if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener("click", function (e) {
-      e.stopPropagation();
-      document.body.classList.toggle("sidebar-active");
-    });
-  }
-
   document.addEventListener("click", function (e) {
     if (window.innerWidth < 1100) {
       var isClickInsideSidebar = mainSidebar && mainSidebar.contains(e.target);
